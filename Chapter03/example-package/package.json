@@ -1,0 +1,19 @@
+{
+  "name": "example-package",
+  "version": "1.0.0",
+  "description": "This is an example of initializing a Node.js project",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "example",
+    "package"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "hexy": "^0.3.0"
+  }
+}
