@@ -1,0 +1,20 @@
+{
+  "name": "notes",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "cross-env DEBUG=notes:* node ./app.mjs",
+    "server1": "cross-env DEBUG=notes:* PORT=3001 node ./app.mjs",
+    "server2": "cross-env DEBUG=notes:* PORT=3002 node ./app.mjs"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "cross-env": "^6.0.3",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "hbs": "^4.0.6",
+    "http-errors": "^1.7.3",
+    "morgan": "^1.9.1"
+  }
+}
