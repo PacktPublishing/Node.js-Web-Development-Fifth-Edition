@@ -1,0 +1,27 @@
+{
+  "name": "notes",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "cross-env DEBUG=notes:* node ./app.mjs",
+    "server1": "cross-env DEBUG=notes:* PORT=3001 node ./app.mjs",
+    "server2": "cross-env DEBUG=notes:* PORT=3002 node ./app.mjs",
+    "dl-minty": "mkdir -p minty && npm run dl-minty-css && npm run dl-minty-min-css",
+    "dl-minty-css": "wget https://bootswatch.com/4/minty/bootstrap.css -O minty/bootstrap.css",
+    "dl-minty-min-css": "wget https://bootswatch.com/4/minty/bootstrap.min.css -O minty/bootstrap.min.css"  
+  },
+  "dependencies": {
+    "bootstrap": "^4.4.1",
+    "cookie-parser": "^1.4.4",
+    "cross-env": "^6.0.3",
+    "debug": "^4.1.1",
+    "express": "^4.17.1",
+    "feather-icons": "^4.25.0",
+    "hbs": "^4.0.6",
+    "http-errors": "^1.7.3",
+    "jquery": "^1.9.1",
+    "morgan": "^1.9.1",
+    "popper.js": "^1.16.0"
+  }
+}
