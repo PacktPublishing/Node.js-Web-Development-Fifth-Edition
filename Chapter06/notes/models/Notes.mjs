@@ -18,7 +18,6 @@ export class Note {
 }
 
 export class AbstractNotesStore {
-    static store() { }
     async update(key, title, body) { }
     async create(key, title, body) { }
     async read(key) { }

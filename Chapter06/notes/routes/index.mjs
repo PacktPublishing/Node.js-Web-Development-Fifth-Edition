@@ -1,9 +1,7 @@
 // import * as util from 'util';
 import { default as express } from 'express';
-import { InMemoryNotesStore } from '../models/notes-memory.mjs';
+import { NotesStore as notes } from '../app.mjs';
 export const router = express.Router();
-
-const notes = InMemoryNotesStore.store();
 
 /* GET home page. */
 router.get('/', async (req, res, next) => {

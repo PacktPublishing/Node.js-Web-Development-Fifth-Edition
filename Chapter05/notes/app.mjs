@@ -10,6 +10,8 @@ import * as url from 'url';
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from './appsupport.mjs';
+import { InMemoryNotesStore } from './models/notes-memory.mjs';
+export const NotesStore = new InMemoryNotesStore();
 
 import { router as indexRouter } from './routes/index.mjs';
 import { router as notesRouter }  from './routes/notes.mjs'; 

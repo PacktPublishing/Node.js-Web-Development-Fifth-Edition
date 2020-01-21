@@ -10,6 +10,8 @@ import * as url from 'url';
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from './appsupport.mjs';
+import { InMemoryNotesStore } from './models/notes-memory.mjs';
+export const NotesStore = new InMemoryNotesStore();
 
 import { router as indexRouter } from './routes/index.mjs';
 import { router as notesRouter }  from './routes/notes.mjs'; 
@@ -27,6 +29,7 @@ hbs.registerPartials(path.join(__dirname, 'partials'));
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
