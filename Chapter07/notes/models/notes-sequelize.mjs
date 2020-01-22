@@ -9,7 +9,7 @@ const debug = DBG('notes:notes-sequelize');
 const error = DBG('notes:error-sequelize'); 
 
 var sequelize;
-class SQNote extends Sequelize.Model {}
+export class SQNote extends Sequelize.Model {}
 
 async function connectDB() {
     if (sequelize) return;

@@ -103,6 +103,7 @@ async function catchProcessDeath() {
     debug('urk...');
     await NotesStore.close();
     await server.close();
+    process.exit(0);
 }
 
 process.on('SIGTERM', catchProcessDeath);
