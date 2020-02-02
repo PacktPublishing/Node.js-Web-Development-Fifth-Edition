@@ -66,27 +66,27 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(session({ 
-    store: new FileStore({ path: "sessions" }), 
+app.use(session({
+    store: new FileStore({ path: "sessions" }),
     secret: 'keyboard mouse',
     resave: true,
     saveUninitialized: true,
     name: sessionCookieName
-})); 
+}));
 initPassport(app);
 app.use(express.static(path.join(__dirname, 'public')));
-// app.use('/assets/vendor/bootstrap', express.static( 
-//     path.join(__dirname, 'node_modules', 'bootstrap', 'dist'))); 
-// app.use('/assets/vendor/bootstrap', express.static( 
-//     path.join(__dirname, 'theme', 'dist'))); 
-app.use('/assets/vendor/bootstrap/js', express.static( 
-    path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js'))); 
-app.use('/assets/vendor/bootstrap/css', express.static( 
+// app.use('/assets/vendor/bootstrap', express.static(
+//     path.join(__dirname, 'node_modules', 'bootstrap', 'dist')));
+// app.use('/assets/vendor/bootstrap', express.static(
+//     path.join(__dirname, 'theme', 'dist')));
+app.use('/assets/vendor/bootstrap/js', express.static(
+    path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js')));
+app.use('/assets/vendor/bootstrap/css', express.static(
     path.join(__dirname, 'minty')));
-app.use('/assets/vendor/jquery', express.static( 
-    path.join(__dirname, 'node_modules', 'jquery'))); 
-app.use('/assets/vendor/popper.js', express.static( 
-    path.join(__dirname, 'node_modules', 'popper.js', 'dist'))); 
+app.use('/assets/vendor/jquery', express.static(
+    path.join(__dirname, 'node_modules', 'jquery')));
+app.use('/assets/vendor/popper.js', express.static(
+    path.join(__dirname, 'node_modules', 'popper.js', 'dist')));
 app.use('/assets/vendor/feather-icons', express.static(
     path.join(__dirname, 'node_modules', 'feather-icons', 'dist')));
 
