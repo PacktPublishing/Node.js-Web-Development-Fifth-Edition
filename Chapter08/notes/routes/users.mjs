@@ -4,6 +4,8 @@ import { default as express } from 'express';
 import { default as passport } from 'passport'; 
 import { default as passportLocal } from 'passport-local';
 const LocalStrategy = passportLocal.Strategy; 
+import passportTwitter from 'passport-twitter';
+const TwitterStrategy = passportTwitter.Strategy;
 import * as usersModel from '../models/users-superagent.mjs';
 import { sessionCookieName } from '../app.mjs';
 
@@ -74,4 +76,30 @@ passport.deserializeUser(async (username, done) => {
       done(null, user);
     } catch(e) { done(e); }
 });
+
+const twittercallback = process.env.TWITTER_CALLBACK_HOST
+    ? process.env.TWITTER_CALLBACK_HOST
+    : "http://localhost:3000";
+
+passport.use(new TwitterStrategy({
+  consumerKey: process.env.TWITTER_CONSUMER_KEY,
+  consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+  callbackURL: `${twittercallback}/users/auth/twitter/callback`
+},
+async function(token, tokenSecret, profile, done) {
+  try {
+    done(null, await usersModel.findOrCreate({
+      id: profile.username, username: profile.username, password: "",
+      provider: profile.provider, familyName: profile.displayName,
+      givenName: "", middleName: "",
+      photos: profile.photos, emails: profile.emails
+    }));
+  } catch(err) { done(err); }
+}));
+
+router.get('/auth/twitter', passport.authenticate('twitter')); 
+
+router.get('/auth/twitter/callback', 
+  passport.authenticate('twitter', { successRedirect: '/', 
+                       failureRedirect: '/users/login' }));
 
