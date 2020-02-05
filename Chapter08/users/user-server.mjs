@@ -122,11 +122,13 @@ server.del('/destroy/:username', async (req, res, next) => {
         await connectDB();
         const user = await SQUser.findOne({ where: { username: req.params.username } });
         if (!user) {
-            res.send(404, new Error(`Did not find requested ${req.params.username} to delete`));
+            res.send(404,
+                new Error(`Did not find requested ${req.params.username} to delete`));
+        } else {
+            user.destroy();
+            res.contentType = 'json';
+            res.send({});
         }
-        user.destroy();
-        res.contentType = 'json';
-        res.send({}); 
         next(false); 
     } catch(err) {
         res.send(500, err);
