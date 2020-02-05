@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml NOTES_MODEL=sequelize USER_SERVICE_URL=http://localhost:5858 node ./app.mjs",
+    "start": "DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-sqlite.yaml NOTES_MODEL=sequelize USER_SERVICE_URL=http://localhost:5858 node ./app.mjs",
     "dl-minty": "mkdir -p minty && npm run dl-minty-css && npm run dl-minty-min-css",
     "dl-minty-css": "wget https://bootswatch.com/4/minty/bootstrap.css -O minty/bootstrap.css",
     "dl-minty-min-css": "wget https://bootswatch.com/4/minty/bootstrap.min.css -O minty/bootstrap.min.css"
@@ -14,6 +14,7 @@
     "cookie-parser": "^1.4.4",
     "cross-env": "^6.0.3",
     "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
     "feather-icons": "^4.25.0",
@@ -27,6 +28,7 @@
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
     "popper.js": "^1.16.0",
     "rotating-file-stream": "^2.0.1",
     "sequelize": "^5.21.3",

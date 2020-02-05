@@ -5,3 +5,5 @@ notes-sequelize.sqlite3
 package-lock.json
 data
 node_modules
+sessions
+.env

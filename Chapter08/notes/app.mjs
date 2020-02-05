@@ -17,6 +17,8 @@ import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from './appsupport.mjs';
 
+import dotenv from 'dotenv/config.js';
+
 import { router as indexRouter } from './routes/index.mjs';
 import { router as notesRouter }  from './routes/notes.mjs';
 import { router as usersRouter, initPassport } from './routes/users.mjs';
