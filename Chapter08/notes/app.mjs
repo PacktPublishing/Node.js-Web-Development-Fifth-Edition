@@ -88,7 +88,7 @@ app.use('/assets/vendor/bootstrap/css', express.static(
 app.use('/assets/vendor/jquery', express.static(
     path.join(__dirname, 'node_modules', 'jquery')));
 app.use('/assets/vendor/popper.js', express.static(
-    path.join(__dirname, 'node_modules', 'popper.js', 'dist')));
+    path.join(__dirname, 'node_modules', 'popper.js', 'dist', 'umd')));
 app.use('/assets/vendor/feather-icons', express.static(
     path.join(__dirname, 'node_modules', 'feather-icons', 'dist')));
 
