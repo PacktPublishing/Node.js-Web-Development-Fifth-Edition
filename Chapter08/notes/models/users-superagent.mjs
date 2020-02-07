@@ -4,6 +4,9 @@ import DBG from 'debug';
 const debug = DBG('notes:users-superagent'); 
 const error = DBG('notes:error-superagent');
 
+import { default as bcrypt } from 'bcrypt';
+const saltRounds = 10;
+
 var authid = 'them';
 var authcode = 'D4ED43C0-8BD6-4FE2-B358-7C0E230D11EF';
  
@@ -13,13 +16,19 @@ function reqURL(path) {
     return requrl.toString();
 }
 
+async function hashpass(password) {
+    let salt = await bcrypt.genSalt(saltRounds);
+    let hashed = await bcrypt.hash(password, salt);
+    return hashed;
+}
+
 export async function create(username, password,
     provider, familyName, givenName, middleName,
     emails, photos) {
     var res = await request
         .post(reqURL('/create-user'))
         .send({
-            username, password, provider,
+            username, password: await hashpass(password), provider,
             familyName, givenName, middleName, emails, photos
         })
         .set('Content-Type', 'application/json')
@@ -34,7 +43,7 @@ export async function update(username, password,
     var res = await request
         .post(reqURL(`/update-user/${username}`))
         .send({
-            username, password, provider,
+            username, password: await hashpass(password), provider,
             familyName, givenName, middleName, emails, photos
         })
         .set('Content-Type', 'application/json')
@@ -66,7 +75,8 @@ export async function findOrCreate(profile) {
     var res = await request
         .post(reqURL('/find-or-create'))
         .send({
-            username: profile.id, password: profile.password,
+            username: profile.id,
+            password: await hashpass(profile.password),
             provider: profile.provider,
             familyName: profile.familyName,
             givenName: profile.givenName,

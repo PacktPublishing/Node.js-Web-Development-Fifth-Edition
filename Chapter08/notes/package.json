@@ -10,6 +10,7 @@
     "dl-minty-min-css": "wget https://bootswatch.com/4/minty/bootstrap.min.css -O minty/bootstrap.min.css"
   },
   "dependencies": {
+    "bcrypt": "^3.0.8",
     "bootstrap": "^4.4.1",
     "cookie-parser": "^1.4.4",
     "cross-env": "^6.0.3",

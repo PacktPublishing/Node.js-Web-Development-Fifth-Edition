@@ -9,6 +9,8 @@ import DBG from 'debug';
 const log = DBG('users:service'); 
 const error = DBG('users:error'); 
 
+import { default as bcrypt } from 'bcrypt';
+
 ///////////// Set up the REST server
 
 var server = restify.createServer({
@@ -150,14 +152,19 @@ server.post('/password-check', async (req, res, next) => {
                 check: false, username: req.params.username, 
                 message: "Could not find user" 
             };
-        } else if (user.username === req.params.username
-                && user.password === req.params.password) {
-            checked = { check: true, username: user.username };
         } else {
-            checked = { 
-                check: false, username: req.params.username,
-                message: "Incorrect password" 
-            };
+            let pwcheck = false;
+            if (user.username === req.params.username) {
+                pwcheck = await bcrypt.compare(req.params.password, user.password);
+            }
+            if (pwcheck) {
+                checked = { check: true, username: user.username };
+            } else {
+                checked = { 
+                    check: false, username: req.params.username,
+                    message: "Incorrect username or password" 
+                };
+            }
         }
         log(`passwordCheck result=${util.inspect(checked)}`);
         res.contentType = 'json';
