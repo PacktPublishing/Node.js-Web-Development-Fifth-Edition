@@ -46,7 +46,7 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
             }, {
                 where: { notekey: key }
             });
-            let note = this.read(key);
+            let note = await this.read(key);
             debug(`UPDATE ${util.inspect(note)}`);
             this.emitUpdated(note);
             return note;

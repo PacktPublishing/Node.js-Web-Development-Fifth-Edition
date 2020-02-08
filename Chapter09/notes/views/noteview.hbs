@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <div class="row"><div class="col-xs-12">
-        {{#if note}}<h3>{{ note.title }}</h3>{{/if}}
-        {{#if note}}<p>{{ note.body }}</p>{{/if}}
+        {{#if note}}<h3 id="notetitle">{{ note.title }}</h3>{{/if}}
+        {{#if note}}<div id="notebody">{{ note.body }}</div>{{/if}}
         <p>Key: {{ notekey }}</p>
     </div></div>
     {{#if user }}
@@ -21,3 +21,29 @@
 </div>
 
 {{> footerjs}}
+
+{{#if notekey}}
+<script src="/socket.io/socket.io.js"></script>
+<script>
+$(document).ready(function () {
+    let socket = io('/notes', {
+        query: {
+            key: '{{ notekey }}'
+        }
+    });
+    socket.on('noteupdated', note => {
+        console.log('noteupdated', note);
+        $('h3#notetitle').empty();
+        $('h3#notetitle').text(note.title);
+        $('#navbartitle').empty();
+        $('#navbartitle').text(note.title);
+        $('#notebody').empty();
+        $('#notebody').text(note.body);
+    });
+    socket.on('notedestroyed', key => {
+        console.log('notedestroyed', key);
+        window.location.href = "/";
+    });
+});
+</script>
+{{/if}}

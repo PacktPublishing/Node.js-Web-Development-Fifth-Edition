@@ -23,19 +23,18 @@ router.get('/', async (req, res, next) => {
 
 async function getKeyTitlesList() {
     const keylist = await notes.keylist();
-    let keyPromises = keylist.map(key => {
-        return notes.read(key);
+    debug(`getKeyTitlesList ${util.inspect(keylist)}`);
+    let keyPromises = keylist.map(key => notes.read(key));
+    let notelist = await Promise.all(keyPromises);
+    return notelist.map(note => {
+        return { key: note.key, title: note.title };
     });
-    return Promise.all(keyPromises);
 };
 
 const emitNoteTitles = async () => {
     const notelist = await getKeyTitlesList();
-    const notes = notelist.map(note => {
-        return { key: note.key, title: note.title }
-    });
     debug(`socketio emitNoteTitles ${util.inspect(notes)}`);
-    io.of('/home').emit('notetitles', { notelist: notes });
+    io.of('/home').emit('notetitles', { notelist });
 };
 
 export function init() {

@@ -1,9 +1,13 @@
-// import * as util from 'util';
+import * as util from 'util';
 import { default as express } from 'express';
 import { NotesStore as notes } from '../models/notes-store.mjs';
 export const router = express.Router();
+import DBG from 'debug';
+const debug = DBG('notes:home');
+const error = DBG('notes:error-home');
 
 import { ensureAuthenticated } from './users.mjs'; 
+import { io } from '../app.mjs';
 
 // Add Note. (create)
 router.get('/add', ensureAuthenticated, (req, res, next) => {
@@ -28,7 +32,7 @@ router.post('/save', ensureAuthenticated, async (req, res, next) => {
                     req.body.title, req.body.body);
         }
         res.redirect('/notes/view?key='+ req.body.notekey);
-    } catch (err) { next(err); }
+    } catch (err) { error(err); next(err); }
 });
 
 // Read Note (read)
@@ -41,7 +45,7 @@ router.get('/view', async (req, res, next) => {
             user: req.user ? req.user : undefined,
             note: note
         });
-    } catch (err) { next(err); }
+    } catch (err) { error(err);  next(err); }
 });
 
 // Edit note (update)
@@ -55,7 +59,7 @@ router.get('/edit', ensureAuthenticated, async (req, res, next) => {
             user: req.user,
             note: note
         });
-    } catch (err) { next(err); }
+    } catch (err) { error(err);  next(err); }
 });
 
 // Ask to Delete note (destroy)
@@ -68,7 +72,7 @@ router.get('/destroy', ensureAuthenticated, async (req, res, next) => {
             user: req.user,
             note: note
         });
-    } catch (err) { next(err); }
+    } catch (err) { error(err);  next(err); }
 });
 
 // Really destroy note (destroy)
@@ -76,9 +80,25 @@ router.post('/destroy/confirm', ensureAuthenticated, async (req, res, next) => {
     try {
         await notes.destroy(req.body.notekey);
         res.redirect('/');
-    } catch (err) { next(err); }
+    } catch (err) {  error(err); next(err); }
 });
 
-
 export function init() {
+    io.of('/notes').on('connect', socket => {
+        debug(`/notes browser connected ${util.inspect(socket.handshake.query)}`);
+        if (socket.handshake.query.key) {
+            socket.join(socket.handshake.query.key);
+        }
+    });
+    notes.on('noteupdated',  note => {
+        const toemit = {
+            key: note.key, title: note.title, body: note.body
+        };
+        debug(`noteupdated to ${note.key} ${util.inspect(toemit)}`);
+        io.of('/notes').to(note.key).emit('noteupdated', toemit);
+    });
+    notes.on('notedestroyed', key => {
+        debug(`notedestroyed to ${key}`);
+        io.of('/notes').to(key).emit('notedestroyed', key);
+    });
 }
