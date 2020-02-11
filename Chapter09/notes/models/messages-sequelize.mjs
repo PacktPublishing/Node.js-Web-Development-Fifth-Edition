@@ -29,6 +29,21 @@ async function connectDB() {
         message: Sequelize.STRING(1024),
         timestamp: Sequelize.DATE
     }, {
+        hooks: {
+            afterCreate: (message, options) => {
+                // debug(`SQMessage CREATE ${util.inspect(message)} ${util.inspect(options)}`);
+                var toEmit = sanitizedMessage(message);
+                emitter.emit('newmessage', toEmit);
+            },
+            afterDestroy: (message, options) => {
+                // debug(`SQMessage DESTROY ${util.inspect(message)} ${util.inspect(options)}`);
+                emitter.emit('destroymessage', {
+                    id: message.id,
+                    namespace: message.namespace,
+                    room: message.room
+                });
+            }
+        },
         sequelize,
         modelName: 'SQMessage'
     });
@@ -51,18 +66,13 @@ export async function postMessage(from, namespace, room, message) {
     const newmsg = await SQMessage.create({
         from, namespace, room, message, timestamp: new Date()
     });
-    var toEmit = sanitizedMessage(newmsg);
-    emitter.emit('newmessage', toEmit);
 }
 
 export async function destroyMessage(id) {
     await connectDB();
     const msg = await SQMessage.findOne({ where: { id } });
     if (msg) {
-        let nsp = msg.namespace;
-        let room = msg.room;
         msg.destroy();
-        emitter.emit('destroymessage', { id, namespace: nsp, room });
     }
 }
 
