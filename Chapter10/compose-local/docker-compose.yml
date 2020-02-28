@@ -1,0 +1,78 @@
+
+version: '3'
+services:
+
+  db-userauth:
+    build: ../db-userauth
+    container_name: db-userauth
+    networks:
+      - authnet
+    volumes:
+      - db-userauth-data:/var/lib/mysql
+    restart: always
+
+  svc-userauth:
+    build: ../users
+    container_name: svc-userauth
+    depends_on:
+      - db-userauth
+    networks:
+      - authnet
+      - svcnet
+    # DO NOT EXPOSE THIS PORT ON PRODUCTION
+    ports:
+        - "5858:5858"
+    restart: always
+
+#  db-notes:
+#    image: "mysql/mysql-server:8.0"
+#    container_name: db-notes
+#    command: [ "mysqld",
+#               "--character-set-server=utf8mb4",
+#               "--collation-server=utf8mb4_unicode_ci",
+#               "--bind-address=0.0.0.0" ]
+#    expose:
+#      - "3306"
+#    networks:
+#      - frontnet
+#    volumes:
+#      - db-notes-data-2:/var/lib/mysql
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+#      MYSQL_USER: notes
+#      MYSQL_PASSWORD: notes12345
+#      MYSQL_DATABASE: notes
+
+  db-notes:
+    build: ../db-notes
+    container_name: db-notes
+    networks:
+      - frontnet
+    volumes:
+      - db-notes-data:/var/lib/mysql
+    restart: always
+
+  svc-notes:
+    build: ../notes
+    container_name: svc-notes
+    depends_on:
+      - db-notes
+    networks:
+      - frontnet
+      - svcnet
+    ports:
+      - "3000:3000"
+    restart: always
+
+networks:
+  frontnet:
+    driver: bridge
+  authnet:
+    driver: bridge
+  svcnet:
+    driver: bridge
+
+volumes: 
+  db-userauth-data: 
+  db-notes-data: 

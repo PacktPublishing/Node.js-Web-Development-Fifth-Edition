@@ -6,7 +6,7 @@
   "scripts": {
     "start": "DEBUG=users:* PORT=5858 SEQUELIZE_CONNECT=sequelize-sqlite3.yaml node ./user-server.mjs",
     "on-server": "DEBUG=users:* REST_LISTEN=0.0.0.0 PORT=5858 SEQUELIZE_CONNECT=sequelize-mysql.yaml node ./user-server.mjs",
-    "docker-build": "docker build -t node-web-development/userauth ."
+    "docker-build": "docker build -t userauth ."
   },
   "author": "David Herron <david@davidherron.com>",
   "license": "ISC",

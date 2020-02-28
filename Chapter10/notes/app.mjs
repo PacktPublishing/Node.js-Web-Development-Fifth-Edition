@@ -30,8 +30,10 @@ import sessionFileStore from 'session-file-store';
 const FileStore = sessionFileStore(session); 
 export const sessionCookieName = 'notescookie.sid';
 const sessionSecret = 'keyboard mouse'; 
-const sessionStore  = new FileStore({ path: "sessions" }); 
-
+const sessionStore  = new FileStore({ 
+    path: process.env.NOTES_SESSIONS_DIR ?             
+          process.env.NOTES_SESSIONS_DIR : "sessions" 
+}); 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const approotdir = __dirname;
