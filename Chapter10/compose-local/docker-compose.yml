@@ -65,6 +65,18 @@ services:
       - "3000:3000"
     restart: always
 
+#  svc-notes-2:
+#        build: ../notes
+#        container_name: svc-notes-2
+#        depends_on:
+#          - db-notes
+#        networks:
+#          - frontnet
+#          - svcnet
+#        ports:
+#          - "3020:3000"
+#        restart: always
+
 networks:
   frontnet:
     driver: bridge
