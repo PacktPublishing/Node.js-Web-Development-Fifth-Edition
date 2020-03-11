@@ -26,14 +26,17 @@ import socketio from 'socket.io';
 import passportSocketIo from 'passport.socketio'; 
 
 import session from 'express-session';
-import sessionFileStore from 'session-file-store';
-const FileStore = sessionFileStore(session); 
+import ConnectRedis from 'connect-redis';
+const RedisStore = ConnectRedis(session);
+import redis from 'redis';
+const redisClient = redis.createClient({
+    host: process.env.REDIS_ENDPOINT
+});
+const sessionStore = new RedisStore({ client: redisClient });
+
 export const sessionCookieName = 'notescookie.sid';
 const sessionSecret = 'keyboard mouse'; 
-const sessionStore  = new FileStore({ 
-    path: process.env.NOTES_SESSIONS_DIR ?             
-          process.env.NOTES_SESSIONS_DIR : "sessions" 
-}); 
+
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 export const approotdir = __dirname;
@@ -71,6 +74,9 @@ io.use(passportSocketIo.authorize({
     secret:       sessionSecret,
     store:        sessionStore
 }));
+
+import redisIO from 'socket.io-redis';
+io.adapter(redisIO({ host: process.env.REDIS_ENDPOINT, port: 6379 }));
 
 // TODO is success and fail callbacks required or useful?  These are marked optional.
 

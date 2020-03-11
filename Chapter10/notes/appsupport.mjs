@@ -1,4 +1,5 @@
 
+import util from 'util';
 import { server, port } from './app.mjs';
 import { default as DBG } from 'debug';
 const debug = DBG('notes:debug'); 
@@ -67,7 +68,7 @@ export function onListening() {
     var bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + bind);
+    debug('Listening on ' + util.inspect(addr));
 }
 
 
@@ -91,10 +92,8 @@ process.on('uncaughtException', function(err) {
     console.error("I've crashed!!! - "+ (err.stack || err)); 
 });
 
-import * as util from 'util';
-
 process.on('unhandledRejection', (reason, p) => {
-    console.error(`Unhandled Rejection at: ${util.inspect(p)} reason: ${reason}`);
+    console.error(`Unhandled Rejection at: ${util.inspect(p)} reason: ${util.inspect(reason)}`);
 });
 
 import { NotesStore } from './models/notes-store.mjs';

@@ -52,15 +52,19 @@ router.get('/logout', function(req, res, next) {
 
 passport.use(new LocalStrategy(
     async (username, password, done) => {
-      try {
-        var check = await usersModel.userPasswordCheck(username,
-        password);
-        if (check.check) {
-          done(null, { id: check.username, username: check.username });
-        } else {
-          done(null, false, check.message);
+        try {
+            var check = await usersModel.userPasswordCheck(username,
+            password);
+            debug(`passport.use LocalStrategy ${util.inspect(check)}`);
+            if (check.check) {
+                done(null, { id: check.username, username: check.username });
+            } else {
+                done(null, false, check.message);
+            }
+        } catch (e) {
+            error(e);
+            done(e);
         }
-      } catch (e) { done(e); }
     }
 ));
 

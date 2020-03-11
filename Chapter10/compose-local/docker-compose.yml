@@ -64,18 +64,29 @@ services:
     ports:
       - "3000:3000"
     restart: always
+    environment:
+        REDIS_ENDPOINT: "redis"
 
-#  svc-notes-2:
-#        build: ../notes
-#        container_name: svc-notes-2
-#        depends_on:
-#          - db-notes
-#        networks:
-#          - frontnet
-#          - svcnet
-#        ports:
-#          - "3020:3000"
-#        restart: always
+  svc-notes-2:
+        build: ../notes
+        container_name: svc-notes-2
+        depends_on:
+          - db-notes
+        networks:
+          - frontnet
+          - svcnet
+        ports:
+          - "3020:3020"
+        restart: always
+        environment:
+            PORT: "3020"
+            REDIS_ENDPOINT: "redis"
+
+  redis:
+    image: "redis:5.0"
+    networks:
+        - frontnet
+    container_name: redis
 
 networks:
   frontnet:
