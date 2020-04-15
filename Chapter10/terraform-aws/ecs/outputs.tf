@@ -1,0 +1,1 @@
+output "alb-dnsname" { value = aws_lb.notes.dns_name }

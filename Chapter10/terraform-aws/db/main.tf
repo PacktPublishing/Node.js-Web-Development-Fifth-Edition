@@ -1,3 +1,21 @@
+provider "aws" {
+    profile  = "notes-app"
+    region   = data.terraform_remote_state.vpc.outputs.aws_region
+}
+
+terraform {
+  backend "local" {
+    path = "../state/db/terraform.tfstate"
+  }
+}
+
+data "terraform_remote_state" "vpc" {
+  backend = "local"
+  config = {
+    path = "../state/vpc/terraform.tfstate"
+  }
+}
+
 resource "aws_db_parameter_group" "default" {
   name   = "rds-pg"
   family = "mysql8.0"
@@ -15,30 +33,26 @@ resource "aws_db_parameter_group" "default" {
 
 resource "aws_db_subnet_group" "default" {
   name       = "main"
-  subnet_ids = [ var.subnet_private1_id, var.subnet_private2_id ]
-
-  tags = {
-    Name = "My DB subnet group"
-  }
+  subnet_ids = [ data.terraform_remote_state.vpc.outputs.subnet_private1_id, data.terraform_remote_state.vpc.outputs.subnet_private2_id ]
 }
 
 resource "aws_security_group" "rds-sg" {
   name        = "rds-security-group"
   description = "allow inbound access to the database"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
 
   ingress {
     protocol    = "tcp"
     from_port   = 0
     to_port     = 3306
-    cidr_blocks = [ var.vpc_cidr ]
+    cidr_blocks = [ data.terraform_remote_state.vpc.outputs.vpc_cidr ]
   }
 
   egress {
     protocol    = "-1"
     from_port   = 0
     to_port     = 0
-    cidr_blocks = [ var.vpc_cidr ]
+    cidr_blocks = [ data.terraform_remote_state.vpc.outputs.vpc_cidr ]
   }
 }
 
@@ -48,10 +62,10 @@ resource "aws_db_instance" "notesdb" {
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t2.micro"
-  identifier           = "notesdb"
-  name                 = "notes"
-  username             = "notes"
-  password             = "notes12345"
+  identifier           = var.notesdb_id
+  name                 = var.notesdb_name
+  username             = var.notesdb_username
+  password             = var.notesdb_userpasswd
   parameter_group_name = aws_db_parameter_group.default.id
   db_subnet_group_name = aws_db_subnet_group.default.id
   vpc_security_group_ids = [ aws_security_group.rds-sg.id ]
@@ -66,10 +80,10 @@ resource "aws_db_instance" "usersdb" {
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = "db.t2.micro"
-  identifier           = "usersdb"
-  name                 = "userauth"
-  username             = "userauth"
-  password             = "userauth"
+  identifier           = var.usersdb_id
+  name                 = var.usersdb_name
+  username             = var.usersdb_username
+  password             = var.usersdb_userpasswd
   parameter_group_name = aws_db_parameter_group.default.id
   db_subnet_group_name = aws_db_subnet_group.default.id
   vpc_security_group_ids = [ aws_security_group.rds-sg.id ]
@@ -77,4 +91,6 @@ resource "aws_db_instance" "usersdb" {
   skip_final_snapshot  = true
   multi_az             = true
 }
+
+
 

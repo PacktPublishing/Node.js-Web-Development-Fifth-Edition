@@ -26,13 +26,23 @@ resource "aws_route" "route-public" {
   gateway_id             = aws_internet_gateway.igw.id
 }
 
-resource "aws_subnet" "public" {
+resource "aws_subnet" "public1" {
   vpc_id     = aws_vpc.notes.id
-  cidr_block = var.public_cidr
+  cidr_block = var.public1_cidr
   availability_zone = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name = "${var.vpc_name}-net-public"
+    Name = "${var.vpc_name}-net-public1"
+  }
+}
+
+resource "aws_subnet" "public2" {
+  vpc_id     = aws_vpc.notes.id
+  cidr_block = var.public2_cidr
+  availability_zone = data.aws_availability_zones.available.names[1]
+
+  tags = {
+    Name = "${var.vpc_name}-net-public2"
   }
 }
 
@@ -66,7 +76,7 @@ resource "aws_eip" "gw" {
 }
 
 resource "aws_nat_gateway" "gw" {
-  subnet_id     = aws_subnet.public.id
+  subnet_id     = aws_subnet.public1.id
   allocation_id = aws_eip.gw.id
 
   tags = {
@@ -87,8 +97,13 @@ resource "aws_route_table" "private" {
   }
 }
 
-resource "aws_route_table_association" "public" {
-  subnet_id      = aws_subnet.public.id
+resource "aws_route_table_association" "public1" {
+  subnet_id      = aws_subnet.public1.id
+  route_table_id = aws_vpc.notes.main_route_table_id
+}
+
+resource "aws_route_table_association" "public2" {
+  subnet_id      = aws_subnet.public2.id
   route_table_id = aws_vpc.notes.main_route_table_id
 }
 
