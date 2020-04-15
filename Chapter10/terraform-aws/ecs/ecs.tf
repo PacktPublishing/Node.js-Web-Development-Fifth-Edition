@@ -77,10 +77,10 @@ resource "aws_ecs_task_definition" "notes" {
                         awslogs-stream-prefix = "ecs"
                     }
                 }
-                portMappings = [ {
+                /* portMappings = [ {
                     containerPort = var.redis_port
                     hostPort = var.redis_port
-                } ]
+                } ] */
             },
             {
                 name = "userauth"
@@ -96,10 +96,10 @@ resource "aws_ecs_task_definition" "notes" {
                         awslogs-stream-prefix = "ecs"
                     }
                 }
-                portMappings = [ {
+                /* portMappings = [ {
                     containerPort = var.userauth_port
                     hostPort = var.userauth_port
-                } ]
+                } ] */
                 environment = [ {
                     name = "PORT"
                     value = tostring(var.userauth_port)
