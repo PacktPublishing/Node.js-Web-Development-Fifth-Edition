@@ -2,15 +2,35 @@
 version: '3'
 services:
 
-  db-userauth:
-    build: ../db-userauth
-    container_name: db-userauth
-    networks:
-      - authnet
-    volumes:
-      - db-userauth-data:/var/lib/mysql
-    restart: always
+#  db-userauth:
+#    build: ../db-userauth
+#    container_name: db-userauth
+#    networks:
+#      - authnet
+#    volumes:
+#      - db-userauth-data:/var/lib/mysql
+#    restart: always
 
+  db-userauth:
+      image: "mysql/mysql-server:8.0"
+      container_name: db-userauth
+      command: [ "mysqld",
+                 "--character-set-server=utf8mb4",
+                 "--collation-server=utf8mb4_unicode_ci",
+                 "--bind-address=0.0.0.0" ]
+      expose:
+        - "3306"
+      networks:
+        - authnet
+      volumes:
+        - db-userauth-data:/var/lib/mysql
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+        MYSQL_USER: userauth
+        MYSQL_PASSWORD: userauth
+        MYSQL_DATABASE: userauth
+    
   svc-userauth:
     build: ../users
     container_name: svc-userauth
@@ -24,34 +44,34 @@ services:
         - "5858:5858"
     restart: always
 
-#  db-notes:
-#    image: "mysql/mysql-server:8.0"
-#    container_name: db-notes
-#    command: [ "mysqld",
-#               "--character-set-server=utf8mb4",
-#               "--collation-server=utf8mb4_unicode_ci",
-#               "--bind-address=0.0.0.0" ]
-#    expose:
-#      - "3306"
-#    networks:
-#      - frontnet
-#    volumes:
-#      - db-notes-data-2:/var/lib/mysql
-#    restart: always
-#    environment:
-#      MYSQL_ROOT_PASSWORD: "w0rdw0rd"
-#      MYSQL_USER: notes
-#      MYSQL_PASSWORD: notes12345
-#      MYSQL_DATABASE: notes
-
   db-notes:
-    build: ../db-notes
+    image: "mysql/mysql-server:8.0"
     container_name: db-notes
+    command: [ "mysqld",
+               "--character-set-server=utf8mb4",
+               "--collation-server=utf8mb4_unicode_ci",
+               "--bind-address=0.0.0.0" ]
+    expose:
+      - "3306"
     networks:
       - frontnet
     volumes:
       - db-notes-data:/var/lib/mysql
     restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+      MYSQL_USER: notes
+      MYSQL_PASSWORD: notes12345
+      MYSQL_DATABASE: notes
+
+#  db-notes:
+#    build: ../db-notes
+#    container_name: db-notes
+#    networks:
+#      - frontnet
+#    volumes:
+#      - db-notes-data:/var/lib/mysql
+#    restart: always
 
   svc-notes:
     build: ../notes
@@ -67,20 +87,20 @@ services:
     environment:
         REDIS_ENDPOINT: "redis"
 
-  svc-notes-2:
-        build: ../notes
-        container_name: svc-notes-2
-        depends_on:
-          - db-notes
-        networks:
-          - frontnet
-          - svcnet
-        ports:
-          - "3020:3020"
-        restart: always
-        environment:
-            PORT: "3020"
-            REDIS_ENDPOINT: "redis"
+#  svc-notes-2:
+#        build: ../notes
+#        container_name: svc-notes-2
+#        depends_on:
+#          - db-notes
+#        networks:
+#          - frontnet
+#          - svcnet
+#        ports:
+#          - "3020:3020"
+#        restart: always
+#        environment:
+#            PORT: "3020"
+#            REDIS_ENDPOINT: "redis"
 
   redis:
     image: "redis:5.0"
