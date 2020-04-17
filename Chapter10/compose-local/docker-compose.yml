@@ -2,6 +2,7 @@
 version: '3'
 services:
 
+# Use this instead to use the db-userauth Dockerfile
 #  db-userauth:
 #    build: ../db-userauth
 #    container_name: db-userauth
@@ -64,6 +65,7 @@ services:
       MYSQL_PASSWORD: notes12345
       MYSQL_DATABASE: notes
 
+# Use this instead to use the db-notes Dockerfile
 #  db-notes:
 #    build: ../db-notes
 #    container_name: db-notes
