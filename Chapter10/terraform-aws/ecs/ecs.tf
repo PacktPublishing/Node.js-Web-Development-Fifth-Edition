@@ -47,6 +47,7 @@ resource "aws_ecs_task_definition" "notes" {
                     // value = "http://svc-userauth.local:${var.userauth_port}" 
                 }, {
                     name = "REDIS_ENDPOINT"
+                    // value = "notes-redis.ciqwft.ng.0001.usw2.cache.amazonaws.com"
                     value = "127.0.0.1"
                     // value = "redis.local"
                 }, {
@@ -129,7 +130,9 @@ resource "aws_ecs_service" "notes" {
 
   network_configuration {
     security_groups  = [aws_security_group.notes_task.id]
-    subnets          = [ data.terraform_remote_state.vpc.outputs.subnet_private1_id, data.terraform_remote_state.vpc.outputs.subnet_private2_id ]
+    subnets          = [ 
+        data.terraform_remote_state.vpc.outputs.subnet_private1_id, 
+        data.terraform_remote_state.vpc.outputs.subnet_private2_id ]
     assign_public_ip = false
   }
 
@@ -139,7 +142,10 @@ resource "aws_ecs_service" "notes" {
     container_port   = var.notes_port
   }
 
-  depends_on = [ /* aws_ecs_cluster.main, */  aws_alb_listener.notes,aws_iam_role_policy_attachment.ecs_task_execution_role, aws_security_group.notes_task ]
+  depends_on = [ 
+      aws_alb_listener.notes,
+      aws_iam_role_policy_attachment.ecs_task_execution_role,
+      aws_security_group.notes_task ]
 }
 
 resource "aws_security_group" "notes_task" {

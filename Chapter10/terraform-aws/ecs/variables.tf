@@ -1,6 +1,7 @@
 variable "notes_port"           { default = 80 }
 variable "notes_fargate_cpu"    { default = 256 }
 variable "notes_fargate_memory" { default = 512 }
+// variable "notes_count"          { default = 3 }
 variable "notes_count"          { default = 1 }
 
 variable "userauth_port"        { default = 5858 }
