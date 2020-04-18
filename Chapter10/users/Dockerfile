@@ -16,4 +16,4 @@ WORKDIR /userauth
 RUN npm install --unsafe-perm 
  
 EXPOSE 5858 
-CMD node ./user-server.mjs
+CMD [ "node", "./user-server.mjs" ]
