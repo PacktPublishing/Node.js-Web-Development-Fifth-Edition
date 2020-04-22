@@ -88,6 +88,9 @@ services:
     restart: always
     environment:
         REDIS_ENDPOINT: "redis"
+        # SEQUELIZE_CONNECT: models/sequelize-sqlite.yaml
+        # NOTES_MODEL: sequelize
+
 
 #  svc-notes-2:
 #        build: ../notes

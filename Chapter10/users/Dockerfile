@@ -1,5 +1,5 @@
 
-FROM node:13.8
+FROM node:14.0
 
 RUN apt-get update -y  \
     && apt-get upgrade -y \
