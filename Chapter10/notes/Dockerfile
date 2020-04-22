@@ -1,4 +1,6 @@
 FROM node:14.0
+# If SQLITE3 install fails, use the older Node.js
+# FROM node:13.10
  
 RUN apt-get update -y \
     && apt-get -y install curl python build-essential git ca-certificates
