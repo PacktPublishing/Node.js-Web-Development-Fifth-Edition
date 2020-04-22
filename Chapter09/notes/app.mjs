@@ -10,8 +10,9 @@ const dbgerror = DBG('notes:error');
 import { default as cookieParser } from 'cookie-parser';
 import { default as bodyParser } from 'body-parser';
 import * as http from 'http';
-import * as url from 'url';
-import * as fs from 'fs';
+// import fs from 'fs';
+import { approotdir } from './approotdir.mjs';
+const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from './appsupport.mjs';
@@ -31,10 +32,6 @@ const FileStore = sessionFileStore(session);
 export const sessionCookieName = 'notescookie.sid';
 const sessionSecret = 'keyboard mouse'; 
 const sessionStore  = new FileStore({ path: "sessions" }); 
-
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-export const approotdir = __dirname;
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';
 import { init as homeInit } from './routes/index.mjs';

@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import util from 'util';
-import { approotdir } from '../app.mjs';
+import { approotdir } from '../approotdir.mjs';
 import { Note, AbstractNotesStore } from './Notes.mjs';
 import { default as DBG } from 'debug';
 const debug = DBG('notes:notes-fs');

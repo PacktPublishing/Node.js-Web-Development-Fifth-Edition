@@ -11,8 +11,9 @@ const dbgerror = DBG('notes:error');
 import { default as cookieParser } from 'cookie-parser';
 import { default as bodyParser } from 'body-parser';
 import * as http from 'http';
-import * as url from 'url';
-import * as fs from 'fs';
+// import fs from 'fs';
+import { approotdir } from './approotdir.mjs';
+const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from './appsupport.mjs';
@@ -27,10 +28,6 @@ import session from 'express-session';
 import sessionFileStore from 'session-file-store';
 const FileStore = sessionFileStore(session); 
 export const sessionCookieName = 'notescookie.sid';
-
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-export const approotdir = __dirname;
 
 // capcon.startCapture(process.stdout, function (stdout) {
 //    fs.appendFileSync('stdout.txt', stdout, 'utf8');

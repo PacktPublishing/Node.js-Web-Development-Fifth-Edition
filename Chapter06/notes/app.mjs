@@ -6,7 +6,8 @@ import { default as logger } from 'morgan';
 import { default as cookieParser } from 'cookie-parser';
 import { default as bodyParser } from 'body-parser';
 import * as http from 'http';
-import * as url from 'url';
+import { approotdir } from './approotdir.mjs';
+const __dirname = approotdir;
 import {
     normalizePort, onError, onListening, handle404, basicErrorHandler
 } from './appsupport.mjs';
@@ -15,10 +16,6 @@ export const NotesStore = new InMemoryNotesStore();
 
 import { router as indexRouter } from './routes/index.mjs';
 import { router as notesRouter }  from './routes/notes.mjs'; 
-
-const __filename = url.fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-export const approotdir = __dirname;
 
 export const app = express();
 
