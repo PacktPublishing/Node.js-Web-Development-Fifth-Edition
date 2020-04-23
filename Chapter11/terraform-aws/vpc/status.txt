@@ -1,0 +1,8 @@
+igw_id = igw-0be39dd6595407d8f
+private_rt_id = rtb-0a729aa43e1414d6f
+subnet_private1_id = subnet-055135ee7a02f20cc
+subnet_private2_id = subnet-0ef2e443d28256f71
+subnet_public1_id = subnet-09cd8004237b2f5bd
+vpc_arn = arn:aws:ec2:us-west-2:098106984154:vpc/vpc-0c5aad73127bda4d6
+vpc_cidr = 10.0.0.0/16
+vpc_id = vpc-0c5aad73127bda4d6

@@ -1,0 +1,3 @@
+export AWS_REGION=us-west-2
+export AWS_PROFILE=notes-app
+export AWS_USER=098106984154

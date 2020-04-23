@@ -1,0 +1,27 @@
+{
+  "name": "user-auth-server",
+  "version": "1.0.0",
+  "description": "User information database",
+  "main": "user-server.mjs",
+  "scripts": {
+    "start": "DEBUG=users:* PORT=5858 SEQUELIZE_CONNECT=sequelize-sqlite3.yaml node ./user-server.mjs",
+    "on-server": "DEBUG=users:* REST_LISTEN=0.0.0.0 PORT=5858 SEQUELIZE_CONNECT=sequelize-mysql.yaml node ./user-server.mjs",
+    "predocker-build": "docker rmi svc-userauth || true",
+    "docker-build": "docker build -t svc-userauth ."
+  },
+  "author": "David Herron <david@davidherron.com>",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.8",
+    "commander": "^4.1.0",
+    "debug": "^4.1.1",
+    "fs-extra": "^8.1.0",
+    "js-yaml": "^3.13.1",
+    "mariadb": "^2.2.0",
+    "mysql2": "^2.1.0",
+    "restify": "^8.5.1",
+    "restify-clients": "^2.6.8",
+    "sequelize": "^5.21.3",
+    "sqlite3": "^4.1.1"
+  }
+}
