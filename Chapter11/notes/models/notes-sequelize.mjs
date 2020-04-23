@@ -79,7 +79,12 @@ export default class SequelizeNotesStore extends AbstractNotesStore {
 
     async destroy(key) {
         await connectDB();
-        await SQNote.destroy({ where: { notekey: key } });
+        const note = await SQNote.findOne({ where: { notekey: key } });
+        if (!note) {
+            throw new Error(`No note found for ${key}`);
+        } else {
+            await SQNote.destroy({ where: { notekey: key } });
+        }
         debug(`DESTROY ${key}`);
         this.emitDestroyed(key);
     }

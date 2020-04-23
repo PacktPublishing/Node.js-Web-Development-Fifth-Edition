@@ -75,11 +75,15 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
             db.get("SELECT * FROM notes WHERE notekey = ?",
                 [ key ], (err, row) => {
                 if (err) return reject(err);
-                console.log(`SQLITE3NotesStore read ${key} => ${util.inspect(row)}`);
-                const note = new Note(row.notekey,
-                                row.title, row.body);
-                debug(`READ ${util.inspect(note)}`);
-                resolve(note);
+                // console.log(`SQLITE3NotesStore read ${key} => ${util.inspect(row)}`);
+                if (!row) {
+                    reject(new Error(`No note found for ${key}`));
+                } else {
+                    const note = new Note(row.notekey,
+                                    row.title, row.body);
+                    debug(`READ ${util.inspect(note)}`);
+                    resolve(note);
+                }
             });
         });
         return note;
@@ -87,11 +91,12 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
 
     async destroy(key) {
         var db = await connectDB();
+        const note = await this.read(key);
         return await new Promise((resolve, reject) => {
             db.run("DELETE FROM notes WHERE notekey = ?;",
                 [ key ], err => {
                 if (err) return reject(err);
-                debug(`DESTROY ${key}`);
+                // debug(`DESTROY ${key}`);
                 this.emitDestroyed(key);
                 resolve();
             });

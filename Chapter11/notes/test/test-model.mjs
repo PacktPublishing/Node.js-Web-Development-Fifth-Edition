@@ -2,10 +2,7 @@
 import util from 'util';
 import Chai from 'chai';
 const assert = Chai.assert;
-import {
-    NotesStore,
-    useModel as useNotesModel
-} from '../models/notes-store.mjs';
+import { useModel as useNotesModel } from '../models/notes-store.mjs';
 
 var store;
 
@@ -91,15 +88,14 @@ describe("Model Test", function() {
           assert.notExists(note);
           throw new Error("should not get here");
         } catch(err) {
-          // this is expected, so do not indicate error
+          // An error is expected, so it is an error if
+          // the 'should not get here' error is thrown
           assert.notEqual(err.message, "should not get here");
         }
     });
 
     after(async function() {
-        // console.log('beforeEach');
         const keyz = await store.keylist();
-        // console.log(`beforeEach keylist ${keyz}`);
         for (let key of keyz) {
             await store.destroy(key);
         }
@@ -125,9 +121,7 @@ describe("Model Test", function() {
     });
 
     after(async function() {
-        // console.log('beforeEach');
         const keyz = await store.keylist();
-        // console.log(`beforeEach keylist ${keyz}`);
         for (let key of keyz) {
             await store.destroy(key);
         }
@@ -160,29 +154,28 @@ describe("Model Test", function() {
     });
 
     after(async function() {
-        // console.log('beforeEach');
         const keyz = await store.keylist();
-        // console.log(`beforeEach keylist ${keyz}`);
         for (let key of keyz) {
             await store.destroy(key);
         }
     });
   });
 
-  afterEach(function() {
-    // console.log('afterEach');
-  });
-
   after(function() {
     // console.log('after -- closing');
     try {
-        NotesStore.close();
+        store.close();
     } catch (err1) {
         console.error('AFTER close NotesStore ', err1);
+        throw err1;
     }
   });
 });
 
+
+/*
+
+These will help with diagnosing problems.
 
 process.on('uncaughtException', function(err) { 
     console.error("I've crashed!!! - "+ (err.stack || err)); 
@@ -190,7 +183,5 @@ process.on('uncaughtException', function(err) {
 
 process.on('unhandledRejection', (reason, p) => {
     console.error(`Unhandled Rejection at: ${util.inspect(p)} reason:`, reason.stack);
-    console.error(reason.code);
-    console.error(reason.message);
-    console.error(reason.stack);
 });
+*/

@@ -2,7 +2,7 @@
   "name": "notes-test",
   "version": "1.0.0",
   "scripts": {
-      "test-all": "npm run test-notes-memory && npm run test-level && npm run test-notes-fs && npm run test-notes-sqlite3",
+      "test-all": "npm run test-notes-memory && npm run test-level && npm run test-notes-fs && npm run test-notes-sqlite3 && npm run test-notes-sequelize-sqlite",
     "test-notes-memory": "NOTES_MODEL=memory mocha test-model",
     "test-level": "NOTES_MODEL=level mocha test-model",
     "test-notes-fs": "NOTES_MODEL=fs mocha test-model",

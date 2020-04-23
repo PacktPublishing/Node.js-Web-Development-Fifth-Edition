@@ -40,13 +40,14 @@ export default class LevelNotesStore extends AbstractNotesStore {
     async read(key) {
         debug(`reading ${key}`);
         const db = await connectDB();
-        var note = Note.fromJSON(await db.get(key));
+        const note = Note.fromJSON(await db.get(key));
         debug(`read ${key} => ${util.inspect(note)}`);
         return note; // new Note(note.key, note.title, note.body);
     }
 
     async destroy(key) {
         const db = await connectDB();
+        const note = Note.fromJSON(await db.get(key));
         console.log(`LevelNotesStore DESTROY ${key}`);
         await db.del(key);
         this.emitDestroyed(key);
