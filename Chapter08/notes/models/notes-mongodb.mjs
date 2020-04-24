@@ -48,8 +48,14 @@ export default class MongoDBNotesStore extends AbstractNotesStore {
 
     async destroy(key) {
         await connectDB();
-        const collection = db().collection('notes'); 
-        await collection.findOneAndDelete({ notekey: key });
+        const collection = db().collection('notes');
+        const doc = await collection.findOne({ notekey: key });
+        if (!doc) {
+            throw new Error(`No note found for ${key}`);
+        } else {
+            await collection.findOneAndDelete({ notekey: key });
+            this.emitDestroyed(key);
+        }
     }
 
     async keylist() {
