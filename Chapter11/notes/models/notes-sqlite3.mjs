@@ -10,7 +10,7 @@ var db;
 async function connectDB() {
     if (db) return db;
     var dbfile = process.env.SQLITE_FILE || "notes.sqlite3"; 
-    await new Promise((resolve, reject) => {
+    db = await new Promise((resolve, reject) => {
         db = new sqlite3.Database(dbfile,
             sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
             err => {

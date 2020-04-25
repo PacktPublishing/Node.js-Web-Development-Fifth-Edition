@@ -1,4 +1,4 @@
-FROM node:13.8
+FROM node:14
  
 RUN apt-get update -y \
     && apt-get -y install curl python build-essential git ca-certificates
@@ -22,13 +22,13 @@ ENV TWITTER_CONSUMER_SECRET="override"
  
 RUN mkdir -p /notesapp /notesapp/minty /notesapp/partials /notesapp/public /notesapp/routes /notesapp/theme /notesapp/theme/dist /notesapp/views
 COPY minty/ /notesapp/minty/
-COPY models/*.mjs models/sequelize-docker-mysql.yaml /notesapp/models/
+COPY models/*.mjs models/*.yaml /notesapp/models/
 COPY partials/ /notesapp/partials/
 COPY public/ /notesapp/public/
 COPY routes/ /notesapp/routes/
 COPY theme/dist/ /notesapp/theme/dist/
 COPY views/ /notesapp/views/
-COPY app.mjs appsupport.mjs package.json .env /notesapp/
+COPY app.mjs approotdir.mjs appsupport.mjs package.json .env /notesapp/
 
 WORKDIR /notesapp
 
