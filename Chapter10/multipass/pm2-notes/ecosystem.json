@@ -1,0 +1,20 @@
+{
+  "apps" : [
+    {
+      "name": "Notes",
+      "script": "app.mjs",
+      "cwd": "/notes",
+      "env": {
+        "REQUEST_LOG_FORMAT": "common",
+        "PORT": "80",
+        "SEQUELIZE_CONNECT": "models/sequelize-mysql.yaml",
+        "NOTES_MODEL": "sequelize",
+        "USER_SERVICE_URL": "http://192.168.64.8:5858",
+        "TWITTER_CALLBACK_HOST": "http://192.168.64.9"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }
+  ]
+}
