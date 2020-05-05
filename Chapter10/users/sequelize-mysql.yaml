@@ -1,6 +1,6 @@
-dbname: users
-username: ... user name
-password: ... password
+dbname: userauth
+username: userauth
+password: userauth
 params:
     host: localhost
     port: 3306

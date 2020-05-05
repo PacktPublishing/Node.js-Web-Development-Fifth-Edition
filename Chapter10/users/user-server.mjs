@@ -25,8 +25,10 @@ server.use(restify.plugins.bodyParser({
     mapParams: true
 }));
 
-server.listen(process.env.PORT, "localhost", function() {
-    log(server.name +' listening at '+ server.url);
+server.listen(process.env.PORT,
+    process.env.REST_LISTEN ? process.env.REST_LISTEN : "localhost",
+    function() {
+  log(server.name +' listening at '+ server.url);
 });
 
 process.on('uncaughtException', function(err) { 
