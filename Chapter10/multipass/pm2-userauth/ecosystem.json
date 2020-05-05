@@ -3,7 +3,7 @@
     {
       "name": "User Authentication",
       "script": "user-server.mjs",
-      "cwd": "/userauth",
+      "cwd": "/opt/userauth",
       "env": {
         "REQUEST_LOG_FORMAT": "common",
         "PORT": "5858",

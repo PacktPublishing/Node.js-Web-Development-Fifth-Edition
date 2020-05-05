@@ -1,7 +1,7 @@
 {
-    "name": "pm2-notes",
+    "name": "pm2-single",
     "version": "1.0.0",
-    "description": "PM2 Configuration for svc-notes",
+    "description": "PM2 Configuration to install Notes stack on single system",
     "scripts": {
         "start": "pm2 start ecosystem.json",
         "stop": "pm2 stop ecosystem.json",
