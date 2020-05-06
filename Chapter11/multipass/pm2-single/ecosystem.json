@@ -1,0 +1,31 @@
+{
+  "apps" : [ {
+      "name": "Notes",
+      "script": "app.mjs",
+      "cwd": "/opt/notes",
+      "env": {
+        "REQUEST_LOG_FORMAT": "common",
+        "PORT": "80",
+        "SEQUELIZE_CONNECT": "models/sequelize-mysql.yaml",
+        "NOTES_MODEL": "sequelize",
+        "USER_SERVICE_URL": "http://127.0.0.1:5858",
+        "TWITTER_CALLBACK_HOST": "http://192.168.64.9"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    }, {
+      "name": "User Authentication",
+      "script": "user-server.mjs",
+      "cwd": "/opt/userauth",
+      "env": {
+        "REQUEST_LOG_FORMAT": "common",
+        "PORT": "5858",
+        "REST_LISTEN": "0.0.0.0",
+        "SEQUELIZE_CONNECT": "sequelize-mysql.yaml"
+      },
+      "env_production": {
+        "NODE_ENV": "production"
+      }
+    } ]
+}

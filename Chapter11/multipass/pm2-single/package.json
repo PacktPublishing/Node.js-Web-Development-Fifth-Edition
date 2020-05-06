@@ -1,0 +1,18 @@
+{
+    "name": "pm2-single",
+    "version": "1.0.0",
+    "description": "PM2 Configuration to install Notes stack on single system",
+    "scripts": {
+        "start": "pm2 start ecosystem.json",
+        "stop": "pm2 stop ecosystem.json",
+        "restart": "pm2 restart ecosystem.json",
+        "status": "pm2 status",
+        "save": "pm2 save",
+        "startup": "pm2 startup",
+        "monit": "pm2 monit",
+        "logs": "pm2 logs"
+    },
+    "dependencies": {
+      "pm2": "^4.4.x"
+    }
+}
