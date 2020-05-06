@@ -4,8 +4,8 @@
     "description": "Scripts to define and manage AuthNet",
     "scripts": {
       "build-authnet": "docker network create --driver bridge authnet",
-      "prebuild-db-userauth": "mkdir F:\\userauth-data",
-      "build-db-userauth": "docker run --detach --name db-userauth  --env MYSQL_USER=userauth --env MYSQL_PASSWORD=userauth --env MYSQL_DATABASE=userauth  --mount type=bind,src=F:\\userauth-data,dst=/var/lib/mysql --network authnet --env MYSQL_ROOT_PASSWORD=w0rdw0rd mysql/mysql-server:8.0 --bind_address=0.0.0.0 --socket=/tmp/mysql.sock",
+      "prebuild-db-userauth": "mkdir userauth-data",
+      "build-db-userauth": "docker run --detach --name db-userauth  --env MYSQL_USER=userauth --env MYSQL_PASSWORD=userauth --env MYSQL_DATABASE=userauth  --mount type=bind,src=`pwd`/userauth-data,dst=/var/lib/mysql --network authnet --env MYSQL_ROOT_PASSWORD=w0rdw0rd mysql/mysql-server:8.0 --bind_address=0.0.0.0 --socket=/tmp/mysql.sock",
       "stop-db-userauth": "docker stop db-userauth",
       "start-db-userauth": "docker start db-userauth",
       "build-userauth": "cd ../users && npm run docker-build",
