@@ -28,13 +28,24 @@ import passportSocketIo from 'passport.socketio';
 
 import session from 'express-session';
 import sessionFileStore from 'session-file-store';
-const FileStore = sessionFileStore(session); 
+import ConnectRedis from 'connect-redis';
+const RedisStore = ConnectRedis(session);
+import redis from 'redis';
+var sessionStore;
+if (typeof process.env.REDIS_ENDPOINT !== 'undefined'
+ && process.env.REDIS_ENDPOINT !== '') {
+    const RedisStore = ConnectRedis(session);
+    const redisClient = redis.createClient({
+        host: process.env.REDIS_ENDPOINT
+    });
+    sessionStore = new RedisStore({ client: redisClient });
+} else {
+    const FileStore = sessionFileStore(session);
+    sessionStore = new FileStore({ path: "sessions" });
+}
+
 export const sessionCookieName = 'notescookie.sid';
 const sessionSecret = 'keyboard mouse'; 
-const sessionStore  = new FileStore({ 
-    path: process.env.NOTES_SESSIONS_DIR ?             
-          process.env.NOTES_SESSIONS_DIR : "sessions" 
-}); 
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';
 import { init as homeInit } from './routes/index.mjs';
@@ -69,6 +80,12 @@ io.use(passportSocketIo.authorize({
     secret:       sessionSecret,
     store:        sessionStore
 }));
+
+import redisIO from 'socket.io-redis';
+if (typeof process.env.REDIS_ENDPOINT !== 'undefined'
+ && process.env.REDIS_ENDPOINT !== '') {
+    io.adapter(redisIO({ host: process.env.REDIS_ENDPOINT, port: 6379 }));
+}
 
 // TODO is success and fail callbacks required or useful?  These are marked optional.
 
