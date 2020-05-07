@@ -31,7 +31,10 @@ import sessionFileStore from 'session-file-store';
 const FileStore = sessionFileStore(session); 
 export const sessionCookieName = 'notescookie.sid';
 const sessionSecret = 'keyboard mouse'; 
-const sessionStore  = new FileStore({ path: "sessions" }); 
+const sessionStore  = new FileStore({ 
+    path: process.env.NOTES_SESSIONS_DIR ?             
+          process.env.NOTES_SESSIONS_DIR : "sessions" 
+}); 
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';
 import { init as homeInit } from './routes/index.mjs';

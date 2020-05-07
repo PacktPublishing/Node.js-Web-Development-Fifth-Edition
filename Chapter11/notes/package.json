@@ -8,7 +8,8 @@
     "dl-minty": "mkdir -p minty && npm run dl-minty-css && npm run dl-minty-min-css",
     "dl-minty-css": "wget https://bootswatch.com/4/minty/bootstrap.css -O minty/bootstrap.css",
     "dl-minty-min-css": "wget https://bootswatch.com/4/minty/bootstrap.min.css -O minty/bootstrap.min.css",
-    "on-server": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-mysql.yaml NOTES_MODEL=sequelize TWITTER_CALLBACK_HOST=http://172.23.89.142:3000 USER_SERVICE_URL=http://172.23.83.119:5858 PORT=3000 node ./app.mjs"
+    "on-server": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-mysql.yaml NOTES_MODEL=sequelize TWITTER_CALLBACK_HOST=http://172.23.89.142:3000 USER_SERVICE_URL=http://172.23.83.119:5858 PORT=3000 node ./app.mjs",
+    "docker-build": "docker build -t svc-notes ."
   },
   "dependencies": {
     "bcrypt": "^3.0.8",
