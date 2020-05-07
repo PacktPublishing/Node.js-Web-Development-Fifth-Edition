@@ -15,7 +15,6 @@ ENV SEQUELIZE_CONNECT="models/sequelize-docker-mysql.yaml"
 ENV NOTES_MODEL="sequelize" 
 ENV USER_SERVICE_URL="http://svc-userauth:5858" 
 ENV PORT="3000" 
-ENV NOTES_SESSIONS_DIR="/sessions"
 ENV DOTENV_CONFIG_PATH="/run/secrets/notes-dotenv"
 
 # These values should be supplied elsewhere
@@ -30,7 +29,7 @@ COPY public/ /notesapp/public/
 COPY routes/ /notesapp/routes/
 COPY theme/dist/ /notesapp/theme/dist/
 COPY views/ /notesapp/views/
-COPY app.mjs approotdir.mjs appsupport.mjs package.json /notesapp/
+COPY *.mjs package.json /notesapp/
 
 WORKDIR /notesapp
 
