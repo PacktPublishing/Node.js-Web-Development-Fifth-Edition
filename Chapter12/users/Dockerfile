@@ -18,7 +18,7 @@ ENV SEQUELIZE_CONNECT="sequelize-docker-mysql.yaml"
 ENV REST_LISTEN="0.0.0.0" 
  
 RUN mkdir -p /userauth
-COPY package.json sequelize-docker-mysql.yaml *.mjs /userauth/
+COPY package.json *.yaml *.mjs /userauth/
 WORKDIR /userauth
 RUN npm install --unsafe-perm 
  

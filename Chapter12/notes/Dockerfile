@@ -18,14 +18,9 @@ ENV PORT="3000"
 ENV NOTES_SESSIONS_DIR="/sessions"
 ENV DOTENV_CONFIG_PATH="/run/secrets/notes-dotenv"
 
-ENV TWITTER_CONSUMER_KEY="override"
-ENV TWITTER_CONSUMER_SECRET="override"
-
-# ENV TWITTER_CONSUMER_KEY="..."
-# ENV TWITTER_CONSUMER_SECRET="..."
-# Use this line when the Twitter Callback URL
-# has to be other than localhost:3000
-# ENV TWITTER_CALLBACK_HOST=http://45.55.37.74:3000 
+# These values should be supplied elsewhere
+# ENV TWITTER_CONSUMER_KEY=""
+# ENV TWITTER_CONSUMER_SECRET=""
  
 RUN mkdir -p /notesapp /notesapp/minty /notesapp/partials /notesapp/public /notesapp/routes /notesapp/theme /notesapp/theme/dist /notesapp/views
 COPY minty/ /notesapp/minty/
@@ -35,7 +30,7 @@ COPY public/ /notesapp/public/
 COPY routes/ /notesapp/routes/
 COPY theme/dist/ /notesapp/theme/dist/
 COPY views/ /notesapp/views/
-COPY app.mjs approotdir.mjs appsupport.mjs package.json .env /notesapp/
+COPY *.mjs package.json /notesapp/
 
 WORKDIR /notesapp
 

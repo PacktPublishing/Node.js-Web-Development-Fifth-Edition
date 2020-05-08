@@ -1,6 +1,7 @@
 // import * as util from 'util';
 import { default as express } from 'express';
 import { NotesStore as notes } from '../models/notes-store.mjs';
+import { twitterLogin } from './users.mjs';
 export const router = express.Router();
 
 import { ensureAuthenticated } from './users.mjs'; 
@@ -12,6 +13,7 @@ router.get('/add', ensureAuthenticated, (req, res, next) => {
         docreate: true,
         notekey: "",
         user: req.user,
+        twitterLogin: twitterLogin,
         note: undefined
     });
 });
@@ -39,6 +41,7 @@ router.get('/view', async (req, res, next) => {
             title: note ? note.title : "",
             notekey: req.query.key,
             user: req.user ? req.user : undefined,
+            twitterLogin: twitterLogin,
             note: note
         });
     } catch (err) { next(err); }
@@ -53,6 +56,7 @@ router.get('/edit', ensureAuthenticated, async (req, res, next) => {
             docreate: false,
             notekey: req.query.key,
             user: req.user,
+            twitterLogin: twitterLogin,
             note: note
         });
     } catch (err) { next(err); }
@@ -66,6 +70,7 @@ router.get('/destroy', ensureAuthenticated, async (req, res, next) => {
             title: note ? `Delete ${note.title}` : "",
             notekey: req.query.key,
             user: req.user,
+            twitterLogin: twitterLogin,
             note: note
         });
     } catch (err) { next(err); }

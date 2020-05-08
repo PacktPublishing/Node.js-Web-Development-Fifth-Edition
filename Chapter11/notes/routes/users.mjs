@@ -80,6 +80,7 @@ passport.deserializeUser(async (username, done) => {
 const twittercallback = process.env.TWITTER_CALLBACK_HOST
     ? process.env.TWITTER_CALLBACK_HOST
     : "http://localhost:3000";
+export var twitterLogin;
 
 if (typeof process.env.TWITTER_CONSUMER_KEY !== 'undefined'
   && process.env.TWITTER_CONSUMER_KEY !== ''
@@ -100,6 +101,10 @@ if (typeof process.env.TWITTER_CONSUMER_KEY !== 'undefined'
       }));
     } catch(err) { done(err); }
   }));
+
+  twitterLogin = true;
+} else {
+  twitterLogin = false;
 }
 
 router.get('/auth/twitter', passport.authenticate('twitter')); 

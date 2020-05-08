@@ -28,7 +28,7 @@ COPY public/ /notesapp/public/
 COPY routes/ /notesapp/routes/
 COPY theme/dist/ /notesapp/theme/dist/
 COPY views/ /notesapp/views/
-COPY app.mjs approotdir.mjs appsupport.mjs package.json .env /notesapp/
+COPY *.mjs package.json /notesapp/
 
 WORKDIR /notesapp
 

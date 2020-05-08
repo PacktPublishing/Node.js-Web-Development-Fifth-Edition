@@ -18,7 +18,8 @@ services:
       command: [ "mysqld",
                  "--character-set-server=utf8mb4",
                  "--collation-server=utf8mb4_unicode_ci",
-                 "--bind-address=0.0.0.0" ]
+                 "--bind-address=0.0.0.0",
+                 "--socket=/tmp/mysql.sock" ]
       expose:
         - "3306"
       networks:
@@ -51,7 +52,8 @@ services:
     command: [ "mysqld",
                "--character-set-server=utf8mb4",
                "--collation-server=utf8mb4_unicode_ci",
-               "--bind-address=0.0.0.0" ]
+               "--bind-address=0.0.0.0",
+               "--socket=/tmp/mysql.sock" ]
     expose:
       - "3306"
     networks:
