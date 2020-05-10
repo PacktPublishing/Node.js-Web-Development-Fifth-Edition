@@ -15,7 +15,7 @@ resource "aws_alb_target_group" "notes" {
   vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id 
   target_type = "ip"
 
-  health_check {
+  /* health_check {
     healthy_threshold   = "3"
     interval            = "30"
     protocol            = "HTTP"
@@ -23,7 +23,7 @@ resource "aws_alb_target_group" "notes" {
     timeout             = "3"
     path                = "/"
     unhealthy_threshold = "2"
-  }
+  } */
 }
 
 # Redirect all traffic from the ALB to the target group

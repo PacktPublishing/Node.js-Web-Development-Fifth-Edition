@@ -2,19 +2,28 @@
     "name": "terraform-aws",
     "description": "Scripts to build and manage AWS infrastructure for Notes and Userauth",
     "scripts": {
-        "docker-login": "aws ecr get-login-password --profile ${AWS_PROFILE} --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_USER}.dkr.ecr.${AWS_REGION}.amazonaws.com",
-        "ecr-repositories": "aws ecr describe-repositories --profile ${AWS_PROFILE}",
+        "docker-login": "aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com",
+        "docker-logout": "docker logout $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com",
+        "docker-login-windows": "aws ecr get-login-password --region %AWS_REGION% | docker login --username AWS --password-stdin %AWS_USER%.dkr.ecr.%AWS_REGION%.amazonaws.com",
+        "docker-logout-windows": "docker logout %AWS_USER%.dkr.ecr.%AWS_REGION%.amazonaws.com",
+        "ecr-repositories": "aws ecr describe-repositories",
         "build-images": "npm run build-image-svc-notes && npm run build-image-svc-userauth",
         "build-image-svc-notes": "cd ../notes && npm run docker-build",
         "build-image-svc-userauth": "cd ../users && npm run docker-build",
         "ecr-create-repos": "npm run ecr-create-svc-notes && npm run ecr-create-svc-userauth",
-        "ecr-create-svc-notes": "aws ecr create-repository --profile ${AWS_PROFILE} --repository-name svc-notes --image-scanning-configuration scanOnPush=true --region ${AWS_REGION}",
-        "ecr-create-svc-userauth": "aws ecr create-repository --profile ${AWS_PROFILE} --repository-name svc-userauth --image-scanning-configuration scanOnPush=true --region ${AWS_REGION}",
+        "ecr-create-svc-notes": "aws ecr create-repository --repository-name svc-notes --image-scanning-configuration scanOnPush=true",
+        "ecr-create-svc-userauth": "aws ecr create-repository --repository-name svc-userauth --image-scanning-configuration scanOnPush=true",
         "ecr-tag-repos": "npm run ecr-tag-svc-notes && npm run ecr-tag-svc-userauth",
         "ecr-tag-svc-notes": "docker tag svc-notes:latest ${AWS_USER}.dkr.ecr.${AWS_REGION}.amazonaws.com/svc-notes:latest",
         "ecr-tag-svc-userauth": "docker tag svc-userauth:latest ${AWS_USER}.dkr.ecr.${AWS_REGION}.amazonaws.com/svc-userauth:latest",
+        "ecr-tag-repos-windows": "npm run ecr-tag-svc-notes-windows && npm run ecr-tag-svc-userauth-windows",
+        "ecr-tag-svc-notes-windows": "docker tag svc-notes:latest %AWS_USER%.dkr.ecr.%AWS_REGION%.amazonaws.com/svc-notes:latest",
+        "ecr-tag-svc-userauth-windows": "docker tag svc-userauth:latest %AWS_USER%.dkr.ecr.%AWS_REGION%.amazonaws.com/svc-userauth:latest",
         "ecr-push-repos": "npm run ecr-push-svc-notes && npm run ecr-push-svc-userauth",
         "ecr-push-svc-notes": "docker push ${AWS_USER}.dkr.ecr.${AWS_REGION}.amazonaws.com/svc-notes:latest",
-        "ecr-push-svc-userauth": "docker push ${AWS_USER}.dkr.ecr.${AWS_REGION}.amazonaws.com/svc-userauth:latest"
+        "ecr-push-svc-userauth": "docker push ${AWS_USER}.dkr.ecr.${AWS_REGION}.amazonaws.com/svc-userauth:latest",
+        "ecr-push-repos-windows": "npm run ecr-push-svc-notes-windows && npm run ecr-push-svc-userauth-windows",
+        "ecr-push-svc-notes-windows": "docker push %AWS_USER%.dkr.ecr.%AWS_REGION%.amazonaws.com/svc-notes:latest",
+        "ecr-push-svc-userauth-windows": "docker push %AWS_USER%.dkr.ecr.%AWS_REGION%.amazonaws.com/svc-userauth:latest"
     }
 }

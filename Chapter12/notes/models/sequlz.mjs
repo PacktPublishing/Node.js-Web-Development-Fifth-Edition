@@ -42,7 +42,8 @@ export async function connectDB() {
                 && process.env.SEQUELIZE_DBDIALECT !== '') {
             params.params.dialect = process.env.SEQUELIZE_DBDIALECT;
         }
-        debug(`connectDB ${util.inspect(params)}`);
+        debug(`connectDB dbname=${params.dbname} user=${params.username} host=${params.params.host} dialect=${params.params.dialect}`);
+        // debug(`connectDB ${util.inspect(params)}`);
         sequlz = new Sequelize(params.dbname,
                         params.username, params.password,
                         params.params);

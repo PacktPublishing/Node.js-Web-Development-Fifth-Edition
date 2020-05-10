@@ -1,4 +1,8 @@
 
+locals {
+  twitter_secret_string = jsondecode(data.aws_secretsmanager_secret_version.NOTES_TWITTER_TOKENS.secret_string)
+}
+
 resource "aws_ecs_task_definition" "notes" {
   family                   = "${data.terraform_remote_state.vpc.outputs.vpc_name}-notes-task"
   execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
@@ -52,10 +56,10 @@ resource "aws_ecs_task_definition" "notes" {
                     // value = "redis.local"
                 }, {
                     name = "TWITTER_CONSUMER_KEY"
-                    name = jsondecode(data.aws_secretsmanager_secret_version.NOTES_TWITTER_TOKENS.secret_string)["TWITTER_CONSUMER_KEY"]
+                    value = local.twitter_secret_string.TWITTER_CONSUMER_KEY
                 }, {
                     name = "TWITTER_CONSUMER_SECRET"
-                    name = jsondecode(data.aws_secretsmanager_secret_version.NOTES_TWITTER_TOKENS.secret_string)["TWITTER_CONSUMER_SECRET"]
+                    value = local.twitter_secret_string.TWITTER_CONSUMER_SECRET
                 }, {
                     name = "TWITTER_CALLBACK_HOST"
                     value = "http://${aws_lb.notes.dns_name}:${var.notes_port}"
