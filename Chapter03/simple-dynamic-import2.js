@@ -11,3 +11,4 @@ import('./simple2.mjs')
 .catch(err => {
     console.error(err);
 });
+
