@@ -104,8 +104,6 @@ services:
         SEQUELIZE_DBHOST: "db-notes-test"
         REDIS_ENDPOINT: "redis-test"
         USER_SERVICE_URL: "http://svc-userauth-test:5858"
-        TWITTER_CONSUMER_KEY: "vuTghgR9K8ZCHxOjzURQDIh4P"
-        TWITTER_CONSUMER_SECRET: "tOtJqNIRGjGXjez2qwCLIZeSTfahPIgu7wYdjhSqLl04eLNeRe"
     volumes:
         # TODO  - ./reports-notes:/reports
         - ../notes/test:/notesapp/test
