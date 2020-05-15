@@ -1,0 +1,22 @@
+{
+  "name": "notes-test",
+  "version": "1.0.0",
+  "scripts": {
+    "test-all": "npm run test-notes-memory && npm run test-level && npm run test-notes-fs && npm run test-notes-sqlite3 && npm run test-notes-sequelize-sqlite",
+    "test-notes-memory": "NOTES_MODEL=memory mocha test-model",
+    "test-level": "NOTES_MODEL=level mocha test-model",
+    "test-notes-fs": "NOTES_MODEL=fs mocha test-model",
+    "pretest-notes-sqlite3": "rm -f chap11.sqlite3 && sqlite3 chap11.sqlite3 --init ../models/schema-sqlite3.sql </dev/null",
+    "test-notes-sqlite3": "NOTES_MODEL=sqlite3 SQLITE_FILE=chap11.sqlite3 mocha test-model",
+    "test-notes-sequelize-sqlite": "NOTES_MODEL=sequelize SEQUELIZE_CONNECT=sequelize-sqlite.yaml mocha test-model",
+    "test-notes-sequelize-mysql": "NOTES_MODEL=sequelize SEQUELIZE_CONNECT=../models/sequelize-docker-mysql.yaml SEQUELIZE_DBHOST=db-notes-test mocha test-model",
+    "test-notes-mongodb": "MONGO_URL=mongodb://db-notes-mongo-test/ MONGO_DBNAME=chap11-test NOTES_MODEL=mongodb mocha --no-timeouts test-model"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1"
+  },
+  "dependencies": {
+    "supertest": "^4.0.2"
+  }
+}

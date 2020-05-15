@@ -1,0 +1,152 @@
+
+version: '3'
+services:
+
+# Use this instead to use the db-userauth Dockerfile
+#  db-userauth:
+#    build: ../db-userauth
+#    container_name: db-userauth
+#    networks:
+#      - authnet
+#    volumes:
+#      - db-userauth-data:/var/lib/mysql
+#    restart: always
+
+  db-userauth-test:
+      image: "mysql/mysql-server:8.0"
+      container_name: db-userauth-test
+      command: [ "mysqld",
+                 "--character-set-server=utf8mb4",
+                 "--collation-server=utf8mb4_unicode_ci",
+                 "--bind-address=0.0.0.0",
+                 "--socket=/tmp/mysql.sock" ]
+      expose:
+        - "3306"
+      networks:
+        - authnet-test
+      volumes:
+        - db-userauth-data-test:/var/lib/mysql
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+        MYSQL_USER: userauth
+        MYSQL_PASSWORD: userauth
+        MYSQL_DATABASE: userauth
+    
+  svc-userauth-test:
+    build: ../users
+    container_name: svc-userauth-test
+    depends_on:
+      - db-userauth-test
+    networks:
+      - authnet-test
+      - svcnet-test
+    # DO NOT EXPOSE THIS PORT ON PRODUCTION
+    ports:
+        - "5858:5858"
+    restart: always
+    environment:
+      DEBUG: "users:*"
+      NODE_ENV: "test"
+      SEQUELIZE_DBHOST: "db-userauth-test"
+      # NO TODO SEQUELIZE_CONNECT: "sequelize-docker-test-mysql.yaml"
+      # NO TODO URL_USERS_TEST: "http://localhost:3333"
+    volumes:
+    # TODO   - ./reports-userauth:/reports
+    # TODO   - ./userauth/sequelize-docker-test-mysql.yaml:/userauth/sequelize-docker-test-mysql.yaml
+      - ./userauth/:/userauth/test/
+
+  db-notes-test:
+    image: "mysql/mysql-server:8.0"
+    container_name: db-notes-test
+    command: [ "mysqld",
+               "--character-set-server=utf8mb4",
+               "--collation-server=utf8mb4_unicode_ci",
+               "--bind-address=0.0.0.0",
+               "--socket=/tmp/mysql.sock" ]
+    expose:
+      - "3306"
+    networks:
+      - frontnet-test
+    volumes:
+      - db-notes-data-test:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+      MYSQL_USER: notes
+      MYSQL_PASSWORD: notes12345
+      MYSQL_DATABASE: notes
+
+# Use this instead to use the db-notes Dockerfile
+#  db-notes:
+#    build: ../db-notes
+#    container_name: db-notes
+#    networks:
+#      - frontnet
+#    volumes:
+#      - db-notes-data:/var/lib/mysql
+#    restart: always
+
+  svc-notes-test:
+    build: ../notes
+    container_name: svc-notes-test
+    depends_on:
+      - db-notes-test
+    networks:
+      - frontnet-test
+      - svcnet-test
+    ports:
+      - "3000:3000"
+    restart: always
+    environment:
+        PORT: "3000"
+        NODE_ENV: "test"
+        SEQUELIZE_DBHOST: "db-notes-test"
+        REDIS_ENDPOINT: "redis-test"
+        USER_SERVICE_URL: "http://svc-userauth-test:5858"
+    volumes:
+        # TODO  - ./reports-notes:/reports
+        - ../notes/test:/notesapp/test
+        - ../notes/models/schema-sqlite3.sql:/notesapp/models/schema-sqlite3.sql
+
+#  svc-notes-test-2:
+#        build: ../notes
+#        container_name: svc-notes-test-2
+#        depends_on:
+#          - db-notes-test
+#        networks:
+#          - frontnet-test
+#          - svcnet-test
+#        ports:
+#          - "3020:3020"
+#        restart: always
+#        environment:
+#            PORT: "3020"
+#            REDIS_ENDPOINT: "redis-test"
+  
+  # Uncomment this for testing MongoDB
+  # db-notes-mongo-test:
+  #   image: mongo:4.2
+  #   container_name: db-notes-mongo-test
+  #   networks:
+  #     - frontnet-test
+  #   volumes:
+  #     - ./db-notes-mongo:/data/db
+
+  redis-test:
+    image: "redis:5.0"
+    networks:
+        - frontnet-test
+    container_name: redis-test
+
+networks:
+  frontnet-test:
+    driver: bridge
+  authnet-test:
+    driver: bridge
+  svcnet-test:
+    driver: bridge
+
+volumes: 
+  db-userauth-data-test: 
+  db-notes-data-test: 
