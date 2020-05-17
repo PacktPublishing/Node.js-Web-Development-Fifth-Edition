@@ -32,10 +32,38 @@ resource "aws_alb_listener" "notes" {
   port              = var.notes_port
   protocol          = "HTTP"
 
-  default_action {
+  /* default_action {
     target_group_arn = aws_alb_target_group.notes.id
     type             = "forward"
+  } */
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = var.notes_https_port
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
   }
+}
+
+resource "aws_lb_listener" "notes-https" {
+  load_balancer_arn = aws_lb.notes.id
+  port              = var.notes_https_port
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = data.aws_acm_certificate.wwwatts.arn // "arn:aws:acm:us-west-2:098106984154:certificate/4c78e86a-7b9a-494d-96f2-8eb14ee9f04a"
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_alb_target_group.notes.id
+  }
+}
+
+data "aws_acm_certificate" "wwwatts" {
+  domain      = "wwwatts.net"
+  types       = ["AMAZON_ISSUED"]
+  most_recent = true
 }
 
 resource "aws_security_group" "lb" {
@@ -45,8 +73,14 @@ resource "aws_security_group" "lb" {
 
   ingress {
     protocol    = "tcp"
-    from_port   = 0
+    from_port   = var.notes_port
     to_port     = var.notes_port
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    protocol    = "tcp"
+    from_port   = var.notes_https_port
+    to_port     = var.notes_https_port
     cidr_blocks = ["0.0.0.0/0"]
   }
   egress {

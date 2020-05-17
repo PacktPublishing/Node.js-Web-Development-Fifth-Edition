@@ -1,4 +1,5 @@
 variable "notes_port"           { default = 80 }
+variable "notes_https_port"     { default = 443 }
 variable "notes_fargate_cpu"    { default = 256 }
 variable "notes_fargate_memory" { default = 512 }
 // variable "notes_count"          { default = 3 }
