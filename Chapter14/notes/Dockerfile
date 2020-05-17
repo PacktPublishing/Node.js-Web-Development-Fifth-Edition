@@ -1,4 +1,11 @@
-FROM node:14
+FROM node:13.13
+# At some time in the future, SQLITE3 will install correctly
+# on Node.js 14.x.  When that happens, we will be able to shift
+# to a later release of this image.  For now we must stick with 
+# Node.js 13.13 because otherwise lots of errors are printed while
+# installing the SQLite3 package
+#
+# FROM node:14
  
 RUN apt-get update -y \
     && apt-get -y install curl python build-essential git ca-certificates
@@ -11,11 +18,6 @@ ENV PORT="3000"
 ENV NOTES_SESSIONS_DIR="/sessions"
 ENV DOTENV_CONFIG_PATH="/run/secrets/notes-dotenv"
 
-ENV TWITTER_CONSUMER_KEY="override"
-ENV TWITTER_CONSUMER_SECRET="override"
-
-# ENV TWITTER_CONSUMER_KEY="..."
-# ENV TWITTER_CONSUMER_SECRET="..."
 # Use this line when the Twitter Callback URL
 # has to be other than localhost:3000
 # ENV TWITTER_CALLBACK_HOST=http://45.55.37.74:3000 
