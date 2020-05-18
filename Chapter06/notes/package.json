@@ -12,16 +12,16 @@
     "dl-minty-min-css": "wget https://bootswatch.com/4/minty/bootstrap.min.css -O minty/bootstrap.min.css"  
   },
   "dependencies": {
-    "bootstrap": "^4.4.1",
+    "bootstrap": "^4.5.x",
     "cookie-parser": "^1.4.4",
     "cross-env": "^6.0.3",
     "debug": "^4.1.1",
     "express": "^4.17.1",
     "feather-icons": "^4.25.0",
-    "hbs": "^4.0.6",
+    "hbs": "^4.1.x",
     "http-errors": "^1.7.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.x",
     "morgan": "^1.9.1",
-    "popper.js": "^1.16.0"
+    "popper.js": "^1.16.x"
   }
 }
