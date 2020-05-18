@@ -57,6 +57,7 @@
       </div>
       <div class="modal-body">
             <form id="submit-comment">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}">
             <input id="comment-from" type="hidden" name="from"
                     value="{{ user.id }}">
             <input id="comment-namespace" type="hidden" name="namespace"

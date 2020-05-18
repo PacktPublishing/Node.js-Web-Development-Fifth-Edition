@@ -2,7 +2,8 @@
   <div class="row">
     <div class="col-12 btn-group-vertical" role="group">
 
-        <form method='POST' action='/users/login'> 
+        <form method='POST' action='/users/login'>
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="form-group"> 
         <label for="username">User name:</label> 
         <input class="form-control" type='text' id='username' 

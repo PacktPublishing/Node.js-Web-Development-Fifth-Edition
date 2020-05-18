@@ -9,6 +9,8 @@ const debug = DBG('notes:debug');
 const dbgerror = DBG('notes:error');
 import { default as cookieParser } from 'cookie-parser';
 import { default as bodyParser } from 'body-parser';
+import helmet from 'helmet';
+import csrf from 'csurf';
 import * as http from 'http';
 import { approotdir } from './approotdir.mjs';
 const __dirname = approotdir;
@@ -105,15 +107,48 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
         })
         : process.stdout
 }));
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'" ],
+      styleSrc: ["'self'", 'fonts.googleapis.com' ],
+      fontSrc: ["'self'", 'fonts.gstatic.com' ],
+      connectSrc: [ "'self'", 'wss://wwwatts.net' ]
+    }
+}));
+app.use(helmet.dnsPrefetchControl({ allow: false }));
+app.use(helmet.featurePolicy({
+    features: {
+        accelerometer: ["'none'"],
+        ambientLightSensor: ["'none'"],
+        autoplay: ["'none'"],
+        camera: ["'none'"],
+        documentDomain: ["'self'"],
+        documentWrite: ["'self'"],
+        encryptedMedia: ["'self'"],
+        fullscreen: ["'self'"],
+        geolocation: ["'none'"],
+        gyroscope: ["'none'"],
+        vibrate: ["'none'"],
+        payment: ["'none'"],
+        syncXhr: ["'none'"]
+    }
+}));
+app.use(helmet.frameguard({ action: 'deny' }));
+app.use(helmet.xssFilter());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(csrf({ cookie: true }));
+// app.use(sqlinjection);
 app.use(session({
     store: sessionStore,
     secret: sessionSecret,
     resave: true,
     saveUninitialized: true,
-    name: sessionCookieName
+    name: sessionCookieName,
+    secure: true,
+    maxAge: 2 * 60 * 60 * 1000 // 2 hours
 }));
 initPassport(app);
 app.use(express.static(path.join(__dirname, 'public')));

@@ -17,7 +17,7 @@ const error = DBG('notes:error-users');
 
 export function initPassport(app) {
     app.use(passport.initialize());
-    app.use(passport.session()); 
+    app.use(passport.session());
 }
 
 export function ensureAuthenticated(req, res, next) {
@@ -30,7 +30,11 @@ export function ensureAuthenticated(req, res, next) {
 
 router.get('/login', function(req, res, next) {
     try {
-      res.render('login', { title: "Login to Notes", user: req.user, });
+        res.render('login', {
+            title: "Login to Notes",
+            user: req.user,
+            csrfToken: req.csrfToken()
+        });
     } catch (e) { next(e); }
 });
 
@@ -111,9 +115,9 @@ if (typeof process.env.TWITTER_CONSUMER_KEY !== 'undefined'
     twitterLogin = false;
 }
 
-router.get('/auth/twitter', passport.authenticate('twitter')); 
+router.get('/auth/twitter', passport.authenticate('twitter'));
 
-router.get('/auth/twitter/callback', 
-  passport.authenticate('twitter', { successRedirect: '/', 
+router.get('/auth/twitter/callback',
+  passport.authenticate('twitter', { successRedirect: '/',
                        failureRedirect: '/users/login' }));
 
