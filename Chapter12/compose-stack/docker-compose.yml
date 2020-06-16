@@ -1,0 +1,194 @@
+
+version: '3.8'
+services:
+
+# Use this instead to use the db-userauth Dockerfile
+#  db-userauth:
+#    build: ../db-userauth
+#    container_name: db-userauth
+#    networks:
+#      - authnet
+#    volumes:
+#      - db-userauth-data:/var/lib/mysql
+#    restart: always
+
+  db-userauth:
+    image: "mysql/mysql-server:8.0"
+    container_name: db-userauth
+    deploy:
+        replicas: 1
+        placement:
+          constraints:
+        #    - "node.hostname==notes-private-db1"
+             - "node.labels.type==db"
+    command: [ "mysqld",
+                "--character-set-server=utf8mb4",
+                "--collation-server=utf8mb4_unicode_ci",
+                "--bind-address=0.0.0.0",
+                "--socket=/tmp/mysql.sock" ]
+    expose:
+       - "3306"
+    networks:
+       - authnet
+    volumes:
+       # - db-userauth-data:/var/lib/mysql
+       - type: bind
+         source: /data/users
+         target: /var/lib/mysql
+    restart: always
+    environment:
+       MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+       MYSQL_USER: userauth
+       MYSQL_PASSWORD: userauth
+       MYSQL_DATABASE: userauth
+
+  svc-userauth:
+    build: ../users
+    image: 098106984154.dkr.ecr.us-west-2.amazonaws.com/svc-userauth
+    container_name: svc-userauth
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+      #      - "node.hostname==notes-private-db"
+           - "node.labels.type==svc"
+    depends_on:
+      #  - db-notes
+      - db-userauth
+    networks:
+      - authnet
+      - svcnet
+    # DO NOT EXPOSE THIS PORT ON PRODUCTION
+    # ports:
+    #     - "5858:5858"
+    restart: always
+    environment:
+        SEQUELIZE_CONNECT: sequelize-docker-mysql.yaml
+        SEQUELIZE_DBHOST: db-userauth
+
+  db-notes:
+    image: "mysql/mysql-server:8.0"
+    container_name: db-notes
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+      #      - "node.hostname==notes-private-db1"
+            - "node.labels.type==db"
+    command: [ "mysqld",
+               "--character-set-server=utf8mb4",
+               "--collation-server=utf8mb4_unicode_ci",
+               "--bind-address=0.0.0.0",
+               "--socket=/tmp/mysql.sock" ]
+    expose:
+      - "3306"
+    networks:
+      - frontnet
+    volumes:
+      # - db-notes-data:/var/lib/mysql
+      - type: bind
+        source: /data/notes
+        target: /var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+      MYSQL_USER: notes
+      MYSQL_PASSWORD: notes12345
+      MYSQL_DATABASE: notes
+
+# Use this instead to use the db-notes Dockerfile
+#  db-notes:
+#    build: ../db-notes
+#    container_name: db-notes
+#    networks:
+#      - frontnet
+#    volumes:
+#      - db-notes-data:/var/lib/mysql
+#    restart: always
+
+  svc-notes:
+    build: ../notes
+    image: 098106984154.dkr.ecr.us-west-2.amazonaws.com/svc-notes
+    container_name: svc-notes
+    deploy:
+      replicas: 2
+      placement:
+        constraints:
+      #      - "node.hostname==notes-public"
+           - "node.labels.type==public"
+    depends_on:
+      - db-notes
+    networks:
+      - frontnet
+      - svcnet
+    ports:
+      - "80:3000"
+    # Solves this problem:
+    # 2020-06-02T05:48:50.574Z notes:debug basicErrorHandler err= InternalOAuthError: Failed to obtain request token
+    #   at Strategy.OAuthStrategy._createOAuthError (/notesapp/node_modules/passport-oauth1/lib/strategy.js:398:17)
+    #   at /notesapp/node_modules/passport-oauth1/lib/strategy.js:246:41
+    #   at /notesapp/node_modules/oauth/lib/oauth.js:543:17
+    #   at ClientRequest.<anonymous> (/notesapp/node_modules/oauth/lib/oauth.js:421:9)
+    #   at ClientRequest.emit (events.js:315:20)
+    #   at TLSSocket.socketErrorListener (_http_client.js:461:9)
+    #   at TLSSocket.emit (events.js:315:20)
+    #   at emitErrorNT (internal/streams/destroy.js:96:8)
+    #   at emitErrorCloseNT (internal/streams/destroy.js:68:3)
+    #   at processTicksAndRejections (internal/process/task_queues.js:84:21) {
+    # oauthError: Error: getaddrinfo EAI_AGAIN api.twitter.com
+    #    at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:66:26) {
+    #       errno: -3001,
+    #       code: 'EAI_AGAIN',
+    #       syscall: 'getaddrinfo',
+    #       hostname: 'api.twitter.com'
+    #      }
+    #   }
+    dns:
+      - 8.8.8.8
+      - 9.9.9.9
+    restart: always
+    secrets:
+        - TWITTER_CONSUMER_KEY
+        - TWITTER_CONSUMER_SECRET
+    environment:
+        DEBUG: notes:*,express:*
+        REDIS_ENDPOINT: "redis"
+        TWITTER_CALLBACK_HOST: "http://ec2-34-219-77-186.us-west-2.compute.amazonaws.com"
+        TWITTER_CONSUMER_KEY_FILE: /var/run/secrets/TWITTER_CONSUMER_KEY
+        TWITTER_CONSUMER_SECRET_FILE: /var/run/secrets/TWITTER_CONSUMER_SECRET
+        SEQUELIZE_CONNECT: models/sequelize-docker-mysql.yaml
+        SEQUELIZE_DBHOST: db-notes
+        NOTES_MODEL: sequelize
+
+  redis:
+    image: "redis:5.0"
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+            - "node.labels.type!=public"
+    networks:
+        - frontnet
+    container_name: redis
+
+networks:
+  frontnet:
+    # driver: bridge
+    driver: overlay
+  authnet:
+    # driver: bridge
+    driver: overlay
+  svcnet:
+    # driver: bridge
+    driver: overlay
+
+# volumes: 
+#   db-userauth-data: 
+#   db-notes-data: 
+
+
+secrets:
+    TWITTER_CONSUMER_KEY:
+        external: true
+    TWITTER_CONSUMER_SECRET:
+        external: true

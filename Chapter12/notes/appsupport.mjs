@@ -9,7 +9,7 @@ const dbgerror = DBG('notes:error');
  * Normalize a port into a number, string, or false.
  */
 export function normalizePort(val) {
-    var port = parseInt(val, 10);
+    const port = parseInt(val, 10);
 
     if (isNaN(port)) {
         // named pipe
@@ -55,6 +55,10 @@ export function onError(error) {
             console.error(`Notes data store initialization failure because `, error.error);
             process.exit(1);
             break;
+        case 'ETWITTERAUTH':
+            console.error(`Twitter authentication initialization failure because `, error.error);
+            process.exit(1);
+            break;
         default:
             throw error;
     }
@@ -64,22 +68,25 @@ export function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 export function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === 'string'
+    const addr = server.address();
+    const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug('Listening on ' + util.inspect(addr));
+    debug(`Listening on ${bind}`);
 }
 
 
 export function handle404(req, res, next) {
-    var err = new Error('Not Found');
+    const err = new Error('Not Found');
     err.status = 404;
     next(err);
 }
 
 export function basicErrorHandler(err, req, res, next) {
     // set locals, only providing error in development
+    // debug('basicErrorHandler req= ', req);
+    // debug(`basicErrorHandler err=`, err);
+    // debug('basicErrorHandler res= ', res);
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 

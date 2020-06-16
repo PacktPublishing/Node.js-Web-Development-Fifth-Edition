@@ -36,6 +36,8 @@ WORKDIR /notesapp
 
 RUN npm install --unsafe-perm
 
+COPY strategy.js node_modules/passport-oauth1/lib/strategy.js 
+
 # Uncomment to build the theme directory
 # WORKDIR /notesapp/theme
 # RUN npm run download && npm run build && npm run clean
