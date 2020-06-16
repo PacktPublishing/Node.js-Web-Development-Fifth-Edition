@@ -11,7 +11,7 @@ const error = DBG('notes:error-home');
 /* GET home page. */
 router.get('/', async (req, res, next) => {
     try {
-        let notelist = await getKeyTitlesList();
+        const notelist = await getKeyTitlesList();
         // console.log(util.inspect(notelist));
         res.render('index', {
             title: 'Notes', notelist: notelist,
@@ -26,8 +26,8 @@ router.get('/', async (req, res, next) => {
 async function getKeyTitlesList() {
     const keylist = await notes.keylist();
     debug(`getKeyTitlesList ${util.inspect(keylist)}`);
-    let keyPromises = keylist.map(key => notes.read(key));
-    let notelist = await Promise.all(keyPromises);
+    const keyPromises = keylist.map(key => notes.read(key));
+    const notelist = await Promise.all(keyPromises);
     return notelist.map(note => {
         return { key: note.key, title: note.title };
     });

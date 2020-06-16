@@ -1,7 +1,7 @@
 
 import { Note, AbstractNotesStore } from './Notes.mjs';
 
-var notes = [];
+const notes = [];
 
 export default class InMemoryNotesStore extends AbstractNotesStore {
 
