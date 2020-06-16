@@ -5,7 +5,7 @@ import { default as DBG } from 'debug';
 const debug = DBG('notes:notes-level');
 const error = DBG('notes:error-level');
 
-var db;
+let db;
 
 async function connectDB() { 
     if (typeof db !== 'undefined' || db) return db;
@@ -20,7 +20,7 @@ async function connectDB() {
 export default class LevelNotesStore extends AbstractNotesStore {
 
     async close() {
-        var _db = db;
+        const _db = db;
         db = undefined;
         return _db ? _db.close() : undefined;
     }
@@ -36,7 +36,7 @@ export default class LevelNotesStore extends AbstractNotesStore {
     async read(key) {
         debug(`reading ${key}`);
         const db = await connectDB();
-        var note = Note.fromJSON(await db.get(key));
+        const note = Note.fromJSON(await db.get(key));
         debug(`read ${key} => ${util.inspect(note)}`);
         return note; // new Note(note.key, note.title, note.body);
     }
@@ -48,7 +48,7 @@ export default class LevelNotesStore extends AbstractNotesStore {
 
     async keylist() {
         const db = await connectDB();
-        var keyz = [];
+        const keyz = [];
         await new Promise((resolve, reject) => { 
             db.createKeyStream()
             .on('data', data => keyz.push(data)) 
@@ -61,7 +61,7 @@ export default class LevelNotesStore extends AbstractNotesStore {
 
     async count() {
         const db = await connectDB();
-        var total = 0;
+        let total = 0;
         await new Promise((resolve, reject) => { 
             db.createKeyStream()
             .on('data', data => total++) 

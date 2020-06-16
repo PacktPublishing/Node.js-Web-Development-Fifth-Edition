@@ -19,8 +19,12 @@ import {
 
 import dotenv from 'dotenv/config.js';
 
-import { router as indexRouter } from './routes/index.mjs';
-import { router as notesRouter }  from './routes/notes.mjs';
+import {
+    router as indexRouter, init as homeInit
+} from './routes/index.mjs';
+import { 
+    router as notesRouter, init as notesInit
+}  from './routes/notes.mjs';
 import { router as usersRouter, initPassport } from './routes/users.mjs';
 
 import socketio from 'socket.io';
@@ -34,8 +38,6 @@ const sessionSecret = 'keyboard mouse';
 const sessionStore  = new FileStore({ path: "sessions" }); 
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';
-import { init as homeInit } from './routes/index.mjs';
-import { init as notesInit } from './routes/notes.mjs';
 useNotesModel(process.env.NOTES_MODEL)
 .then(store => {
     debug(`Using NotesStore ${store}`);

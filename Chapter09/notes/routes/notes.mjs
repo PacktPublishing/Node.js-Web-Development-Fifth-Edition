@@ -2,6 +2,7 @@ import * as util from 'util';
 import { default as express } from 'express';
 import { NotesStore as notes } from '../models/notes-store.mjs';
 import { twitterLogin } from './users.mjs';
+import { emitNoteTitles } from './index.mjs';
 import {
     postMessage, destroyMessage, recentMessages,
     emitter as msgEvents
@@ -100,10 +101,12 @@ export function init() {
         };
         debug(`noteupdated to ${note.key} ${util.inspect(toemit)}`);
         io.of('/notes').to(note.key).emit('noteupdated', toemit);
+        emitNoteTitles();
     });
     notes.on('notedestroyed', key => {
         debug(`notedestroyed to ${key}`);
         io.of('/notes').to(key).emit('notedestroyed', key);
+        emitNoteTitles();
     });
     
     msgEvents.on('newmessage', newmsg => {

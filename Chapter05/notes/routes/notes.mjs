@@ -8,7 +8,7 @@ router.get('/add', (req, res, next) => {
     res.render('noteedit', {
         title: "Add a Note",
         docreate: true,
-        notekey: "",
+        notekey: '',
         note: undefined
     });
 });
@@ -16,7 +16,7 @@ router.get('/add', (req, res, next) => {
 // Save Note (update)
 router.post('/save', async (req, res, next) => {
     try {
-        var note;
+        let note;
         if (req.body.docreate === "create") {
             note = await notes.create(req.body.notekey,
                     req.body.title, req.body.body);
@@ -31,7 +31,7 @@ router.post('/save', async (req, res, next) => {
 // Read Note (read)
 router.get('/view', async (req, res, next) => {
     try {
-        var note = await notes.read(req.query.key);
+        let note = await notes.read(req.query.key);
         res.render('noteview', {
             title: note ? note.title : "",
             notekey: req.query.key,
@@ -43,7 +43,7 @@ router.get('/view', async (req, res, next) => {
 // Edit note (update)
 router.get('/edit', async (req, res, next) => {
     try {
-        var note = await notes.read(req.query.key);
+        let note = await notes.read(req.query.key);
         res.render('noteedit', {
             title: note ? ("Edit " + note.title) : "Add a Note",
             docreate: false,
@@ -56,7 +56,7 @@ router.get('/edit', async (req, res, next) => {
 // Ask to Delete note (destroy)
 router.get('/destroy', async (req, res, next) => {
     try {
-        var note = await notes.read(req.query.key);
+        let note = await notes.read(req.query.key);
         res.render('notedestroy', {
             title: note ? note.title : "",
             notekey: req.query.key,

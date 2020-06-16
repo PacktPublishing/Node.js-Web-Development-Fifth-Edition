@@ -9,7 +9,7 @@ var db;
  
 async function connectDB() {
     if (db) return db;
-    var dbfile = process.env.SQLITE_FILE || "notes.sqlite3"; 
+    const dbfile = process.env.SQLITE_FILE || "notes.sqlite3"; 
     await new Promise((resolve, reject) => {
         db = new sqlite3.Database(dbfile,
             sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
@@ -25,7 +25,7 @@ async function connectDB() {
 export default class SQLITE3NotesStore extends AbstractNotesStore {
 
     async close() {
-        var _db = db;
+        const _db = db;
         db = undefined;
         return _db ?
             new Promise((resolve, reject) => {
@@ -37,8 +37,8 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
     }
 
     async update(key, title, body) {
-        var db = await connectDB();
-        var note = new Note(key, title, body); 
+        const db = await connectDB();
+        const note = new Note(key, title, body); 
         await new Promise((resolve, reject) => { 
             db.run("UPDATE notes "+
                 "SET title = ?, body = ? "+
@@ -53,8 +53,8 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
     }
 
     async create(key, title, body) {
-        var db = await connectDB();
-        var note = new Note(key, title, body);
+        const db = await connectDB();
+        const note = new Note(key, title, body);
         await new Promise((resolve, reject) => {
             db.run("INSERT INTO notes ( notekey, title, body) "+
                 "VALUES ( ?, ? , ? );",
@@ -68,8 +68,8 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
     }
 
     async read(key) {
-        var db = await connectDB();
-        var note = await new Promise((resolve, reject) => {
+        const db = await connectDB();
+        const note = await new Promise((resolve, reject) => {
             db.get("SELECT * FROM notes WHERE notekey = ?",
                 [ key ], (err, row) => {
                 if (err) return reject(err);
@@ -83,7 +83,7 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
     }
 
     async destroy(key) {
-        var db = await connectDB();
+        const db = await connectDB();
         return await new Promise((resolve, reject) => {
             db.run("DELETE FROM notes WHERE notekey = ?;",
                 [ key ], err => {
@@ -95,10 +95,10 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
     }
 
     async keylist() {
-        var db = await connectDB();
+        const db = await connectDB();
         debug(`keylist db=${util.inspect(db)}`);
-        var keyz = await new Promise((resolve, reject) => {
-            var keyz = [];
+        const keyz = await new Promise((resolve, reject) => {
+            const keyz = [];
             db.all("SELECT notekey FROM notes",
                 (err, rows) => {
                     if (err) return reject(err);
@@ -111,8 +111,8 @@ export default class SQLITE3NotesStore extends AbstractNotesStore {
     }
 
     async count() {
-        var db = await connectDB();
-        var count = await new Promise((resolve, reject) => {
+        const db = await connectDB();
+        const count = await new Promise((resolve, reject) => {
             db.get("select count(notekey) as count from notes",
                 (err, row) => {
                     if (err) return reject(err);

@@ -15,7 +15,10 @@
 <script> 
 $(document).ready(function () { 
   console.log('socket.io starting');
-  var socket = io('/home'); 
+  var socket = io('/home');
+  socket.on('connect', socket => { 
+      console.log('socketio connection on /home'); 
+  });
   socket.on('notetitles', function(data) { 
     var notelist = data.notelist; 
     console.log(`notetitles ${JSON.stringify(notelist)}`);
