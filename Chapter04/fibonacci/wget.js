@@ -14,17 +14,17 @@ const options = {
   method: 'GET'
 };
 
-if (parsedUrl.search) options.path += "?"+parsedUrl.search;
+if (parsedUrl.search) options.path += `?${parsedUrl.search}`;
 
 const req = http.request(options);
 // Invoked when the request is finished
 req.on('response', res => {
-  console.log('STATUS: ' + res.statusCode);
-  console.log('HEADERS: ' + util.inspect(res.headers));
+  console.log(`STATUS: ${res.statusCode}`);
+  console.log(`HEADERS: ${util.inspect(res.headers)}`);
   res.setEncoding('utf8');
-  res.on('data', chunk => { console.log('BODY: ' + chunk); });
-  res.on('error', err => {  console.log('RESPONSE ERROR: ' + err); });
+  res.on('data', chunk => { console.log(`BODY: ${chunk}`); });
+  res.on('error', err => {  console.log(`RESPONSE ERROR: ${err}`); });
 });
 // Invoked on errors
-req.on('error', err => { console.log('REQUEST ERROR: ' + err); });
+req.on('error', err => { console.log(`REQUEST ERROR: ${err}`); });
 req.end();
