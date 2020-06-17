@@ -1,0 +1,14 @@
+output "aws_region" { value = var.aws_region }
+output "vpc_name" { value = var.vpc_name }
+output "vpc_id"   { value = aws_vpc.notes.id }
+output "vpc_arn"  { value = aws_vpc.notes.arn }
+output "vpc_cidr" { value = aws_vpc.notes.cidr_block }
+output "igw_id"   { value = aws_internet_gateway.igw.id }
+output "subnet_public1_id"  { value = aws_subnet.public1.id  }
+// output "subnet_public2_id"  { value = aws_subnet.public2.id  }
+output "subnet_private1_id" { value = aws_subnet.private1.id }
+// output "subnet_private2_id" { value = aws_subnet.private2.id }
+output "public1_cidr"  { value = var.public1_cidr  }
+// output "public2_cidr"  { value = var.public2_cidr  }
+output "private1_cidr" { value = var.private1_cidr }
+// output "private2_cidr" { value = var.private2_cidr }

@@ -1,0 +1,27 @@
+table_association.private1: Creation complete after 1s [id=rtbassoc-092cf03f27e5f91f8]
+
+Apply complete! Resources: 15 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+aws_region = us-west-2
+ec2-private-db1-arn = arn:aws:ec2:us-west-2:098106984154:instance/i-03afceceba12f4906
+ec2-private-db1-dns = ip-10-0-3-32.us-west-2.compute.internal
+ec2-private-db1-ip = 10.0.3.32
+ec2-private-dns = ip-10-0-1-126.us-west-2.compute.internal
+ec2-private-ip = 10.0.1.126
+ec2-private-svc1-arn = arn:aws:ec2:us-west-2:098106984154:instance/i-0f718c041f4eeeae8
+ec2-private-svc1-dns = ip-10-0-3-54.us-west-2.compute.internal
+ec2-private-svc1-ip = 10.0.3.54
+ec2-public-arn = arn:aws:ec2:us-west-2:098106984154:instance/i-08bf5aefad5c50507
+ec2-public-dns = ec2-34-219-77-186.us-west-2.compute.amazonaws.com
+ec2-public-ip = 34.219.77.186
+igw_id = igw-08316a55fbd648793
+private1_cidr = 10.0.3.0/24
+public1_cidr = 10.0.1.0/24
+subnet_private1_id = subnet-06eae79523ac654da
+subnet_public1_id = subnet-015e580b5574ac20e
+vpc_arn = arn:aws:ec2:us-west-2:098106984154:vpc/vpc-07768a9d788f9779a
+vpc_cidr = 10.0.0.0/16
+vpc_id = vpc-07768a9d788f9779a
+vpc_name = notes-vpc
