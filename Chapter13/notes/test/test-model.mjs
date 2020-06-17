@@ -7,6 +7,7 @@ import { useModel as useNotesModel } from '../models/notes-store.mjs';
 var store;
 
 describe('Initialize', function() {
+    this.timeout(100000);
     it('should successfully load the model', async function() {
         try {
             // Initialize just as in app.mjs
