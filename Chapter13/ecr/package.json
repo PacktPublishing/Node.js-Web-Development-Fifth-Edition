@@ -1,0 +1,28 @@
+{
+    "name": "ecr",
+    "description": "Scripts to build Docker containers for Notes and Userauth, and upload them to AWS ECR",
+    "scripts": {
+        "docker-login": "cross-var \"aws ecr get-login-password --profile $AWS_PROFILE --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com\"",
+        "docker-logout": "cross-var docker logout $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com",
+        "ecr-repositories": "aws ecr describe-repositories",
+        "build-images": "npm-run-all build-image:*",
+        "build-image:svc-notes": "cd ../notes && npm run docker-build",
+        "build-image:svc-userauth": "cd ../users && npm run docker-build",
+        "ecr-create-repos": "npm-run-all ecr-create:*",
+        "ecr-create:svc-notes": "aws ecr create-repository --repository-name svc-notes --image-scanning-configuration scanOnPush=true",
+        "ecr-create:svc-userauth": "aws ecr create-repository --repository-name svc-userauth --image-scanning-configuration scanOnPush=true",
+        "ecr-delete-repos": "npm-run-all ecr-delete:*",
+        "ecr-delete:svc-notes": "aws ecr delete-repository --repository-name svc-notes",
+        "ecr-delete:svc-userauth": "aws ecr delete-repository --repository-name svc-userauth",
+        "ecr-tag-repos": "npm-run-all ecr-tag:*",
+        "ecr-tag:svc-notes": "cross-var docker tag svc-notes:latest $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com/svc-notes:latest",
+        "ecr-tag:svc-userauth": "cross-var docker tag svc-userauth:latest $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com/svc-userauth:latest",
+        "ecr-push-repos": "npm-run-all ecr-push:*",
+        "ecr-push:svc-notes": "cross-var docker push $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com/svc-notes:latest",
+        "ecr-push:svc-userauth": "cross-var docker push $AWS_USER.dkr.ecr.$AWS_REGION.amazonaws.com/svc-userauth:latest"
+    },
+    "devDependencies": {
+        "cross-var": "^1.1.0",
+        "npm-run-all": "^4.1.5"
+    }
+}
