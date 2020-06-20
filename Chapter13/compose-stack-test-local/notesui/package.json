@@ -1,0 +1,20 @@
+{
+  "name": "notesui",
+  "version": "1.0.0",
+  "description": "UI tests for Notes app",
+  "main": "index.js",
+  "scripts": {
+    "test": "URL_USERS_TEST=http://localhost:5858 NOTES_HOME_URL=http://localhost:3000 mocha uitest.mjs"
+  },
+  "author": "David Herron <david@davidherron.com>",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "chai": "^4.2.0",
+    "cross-env": "^7.0.2",
+    "mocha": "^7.2.0",
+    "puppeteer": "^4.0.0",
+    "supertest": "^4.0.2",
+    "uuid": "^8.0.0"
+  }
+}

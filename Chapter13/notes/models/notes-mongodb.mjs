@@ -8,7 +8,13 @@ const error = DBG('notes:error-mongodb');
 var client;
 
 const connectDB = async () => { 
-    if (!client) client = await MongoClient.connect(process.env.MONGO_URL);
+    // Fixes:
+    // (node:475) DeprecationWarning: current Server Discovery and Monitoring engine is deprecated, and will be removed in a future version. To use the new Server Discover and Monitoring engine, pass option { useUnifiedTopology: true } to the MongoClient constructor.
+    if (!client) {
+        client = await MongoClient.connect(process.env.MONGO_URL, {
+            useNewUrlParser: true, useUnifiedTopology: true
+        });
+    }
 }
 const db = () => { return client.db(process.env.MONGO_DBNAME); };
 

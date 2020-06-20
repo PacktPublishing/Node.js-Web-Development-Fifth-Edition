@@ -33,6 +33,10 @@ services:
     container_name: svc-userauth
     deploy:
       replicas: 1
+    volumes:
+      - type: bind
+        source: ./userauth
+        target: /userauth/test
     depends_on:
       - db-userauth
     networks:

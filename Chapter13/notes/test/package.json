@@ -9,13 +9,13 @@
     "pretest-notes-sqlite3": "rm -f chap13.sqlite3 && sqlite3 chap13.sqlite3 --init ../models/schema-sqlite3.sql </dev/null",
     "test-notes-sqlite3": "cross-env NOTES_MODEL=sqlite3 SQLITE_FILE=chap13.sqlite3 mocha test-model",
     "test-notes-sequelize-sqlite": "cross-env NOTES_MODEL=sequelize SEQUELIZE_CONNECT=sequelize-sqlite.yaml mocha test-model",
-    "test-notes-sequelize-mysql": "cross-env NOTES_MODEL=sequelize SEQUELIZE_CONNECT=../models/sequelize-docker-mysql.yaml SEQUELIZE_DBHOST=db-notes-test mocha test-model",
-    "test-notes-mongodb": "cross-env MONGO_URL=mongodb://db-notes-mongo-test/ MONGO_DBNAME=chap13-test NOTES_MODEL=mongodb mocha --no-timeouts test-model"
+    "test-notes-sequelize-mysql": "cross-env NOTES_MODEL=sequelize SEQUELIZE_CONNECT=../models/sequelize-docker-mysql.yaml SEQUELIZE_DBHOST=db-notes mocha test-model",
+    "test-notes-mongodb": "cross-env MONGO_URL=mongodb://db-notes-mongo/ MONGO_DBNAME=chap13-test NOTES_MODEL=mongodb mocha --no-timeouts test-model"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "mocha": "^7.1.1",
     "cross-env": "^7.0.2",
-    "npm-run-all": "^4.1.5",
+    "npm-run-all": "^4.1.5"
   }
 }
