@@ -1,0 +1,17 @@
+{
+  "name": "userauth-test",
+  "version": "1.0.0",
+  "description": "Test suite for user authentication server",
+  "main": "test.mjs",
+  "scripts": {
+    "test": "cross-env URL_USERS_TEST=http://localhost:5858 mocha test.mjs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.1",
+    "supertest": "^4.0.2",
+    "cross-env": "^7.0.2"
+  }
+}
