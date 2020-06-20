@@ -1,0 +1,144 @@
+
+version: '3.8'
+services:
+
+  db-userauth:
+    image: "mysql/mysql-server:8.0"
+    container_name: db-userauth
+    deploy:
+        replicas: 1
+    command: [ "mysqld",
+                "--character-set-server=utf8mb4",
+                "--collation-server=utf8mb4_unicode_ci",
+                "--bind-address=0.0.0.0",
+                "--socket=/tmp/mysql.sock" ]
+    expose:
+       - "3306"
+    networks:
+       - authnet
+    # volumes:
+    #   - type: bind
+    #     source: /Volumes/Extra/nodejs/Node.js-14-Web-Development/Chapter13/compose-stack-test-local/data-users
+    #     target: /var/lib/mysql
+    restart: always
+    environment:
+       MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+       MYSQL_USER: userauth
+       MYSQL_PASSWORD: userauth
+       MYSQL_DATABASE: userauth
+
+  svc-userauth:
+    build: ../users
+    image: compose-stack-test-local/svc-userauth
+    container_name: svc-userauth
+    deploy:
+      replicas: 1
+    volumes:
+      - type: bind
+        source: ./userauth
+        target: /userauth/test
+    depends_on:
+      - db-userauth
+    networks:
+      - authnet
+      - svcnet
+    # DO NOT EXPOSE THIS PORT ON PRODUCTION
+    ports:
+        - "5858:5858"
+    restart: always
+    environment:
+        SEQUELIZE_CONNECT: sequelize-docker-mysql.yaml
+        SEQUELIZE_DBHOST: db-userauth
+
+  db-notes:
+    image: "mysql/mysql-server:8.0"
+    container_name: db-notes
+    deploy:
+      replicas: 1
+    command: [ "mysqld",
+               "--character-set-server=utf8mb4",
+               "--collation-server=utf8mb4_unicode_ci",
+               "--bind-address=0.0.0.0",
+               "--socket=/tmp/mysql.sock" ]
+    expose:
+      - "3306"
+    networks:
+      - frontnet
+    # volumes:
+    #  - type: bind
+    #    source: /Volumes/Extra/nodejs/Node.js-14-Web-Development/Chapter13/compose-stack-test-local/data-notes
+    #    target: /var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "w0rdw0rd"
+      MYSQL_USER: notes
+      MYSQL_PASSWORD: notes12345
+      MYSQL_DATABASE: notes
+
+  svc-notes:
+    build: ../notes
+    image: compose-stack-test-local/svc-notes
+    container_name: svc-notes
+    deploy:
+      replicas: 1
+    depends_on:
+      - db-notes
+    volumes:
+      - type: bind
+        source: ../notes/test
+        target: /notesapp/test
+      - type: bind
+        source: ../notes/models/schema-sqlite3.sql
+        target: /notesapp/models/schema-sqlite3.sql
+    networks:
+      - frontnet
+      - svcnet
+    ports:
+      - "3000:3000"
+    dns:
+      - 8.8.8.8
+      - 9.9.9.9
+    restart: always
+    secrets:
+        - TWITTER_CONSUMER_KEY
+        - TWITTER_CONSUMER_SECRET
+    environment:
+        # DEBUG: notes:*,express:*
+        REDIS_ENDPOINT: "redis"
+        TWITTER_CALLBACK_HOST: "http://localhost:3000"
+        TWITTER_CONSUMER_KEY_FILE: /var/run/secrets/TWITTER_CONSUMER_KEY
+        TWITTER_CONSUMER_SECRET_FILE: /var/run/secrets/TWITTER_CONSUMER_SECRET
+        SEQUELIZE_CONNECT: models/sequelize-docker-mysql.yaml
+        SEQUELIZE_DBHOST: db-notes
+        NOTES_MODEL: sequelize
+
+  redis:
+    image: "redis:5.0"
+    deploy:
+      replicas: 1
+    networks:
+        - frontnet
+    container_name: redis
+
+  # Uncomment this for testing MongoDB
+  db-notes-mongo:
+    image: mongo:4.2
+    container_name: db-notes-mongo
+    networks:
+      - frontnet
+    # volumes:
+    #   - ./db-notes-mongo:/data/db
+
+networks:
+  frontnet:
+    driver: overlay
+  authnet:
+    driver: overlay
+  svcnet:
+    driver: overlay
+
+secrets:
+    TWITTER_CONSUMER_KEY:
+        external: true
+    TWITTER_CONSUMER_SECRET:
+        external: true
