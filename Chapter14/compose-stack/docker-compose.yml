@@ -111,7 +111,7 @@ services:
     image: 098106984154.dkr.ecr.us-west-2.amazonaws.com/svc-notes
     container_name: svc-notes
     deploy:
-      replicas: 2
+      replicas: 1
       placement:
         constraints:
       #      - "node.hostname==notes-public"
@@ -121,8 +121,8 @@ services:
     networks:
       - frontnet
       - svcnet
-    ports:
-      - "80:3000"
+    # ports:
+    #   - "80:3000"
     # Solves this problem:
     # 2020-06-02T05:48:50.574Z notes:debug basicErrorHandler err= InternalOAuthError: Failed to obtain request token
     #   at Strategy.OAuthStrategy._createOAuthError (/notesapp/node_modules/passport-oauth1/lib/strategy.js:398:17)
@@ -153,7 +153,7 @@ services:
     environment:
         DEBUG: notes:*,express:*
         REDIS_ENDPOINT: "redis"
-        TWITTER_CALLBACK_HOST: "http://ec2-34-219-77-186.us-west-2.compute.amazonaws.com"
+        TWITTER_CALLBACK_HOST: "http://notes.geekwisdom.net"
         TWITTER_CONSUMER_KEY_FILE: /var/run/secrets/TWITTER_CONSUMER_KEY
         TWITTER_CONSUMER_SECRET_FILE: /var/run/secrets/TWITTER_CONSUMER_SECRET
         SEQUELIZE_CONNECT: models/sequelize-docker-mysql.yaml
@@ -170,6 +170,35 @@ services:
     networks:
         - frontnet
     container_name: redis
+
+  cronginx:
+    build: ./cronginx
+    image: 098106984154.dkr.ecr.us-west-2.amazonaws.com/cronginx
+    container_name: cronginx
+    deploy:
+        replicas: 1
+        placement:
+            constraints:
+               - "node.labels.type==public"
+    networks:
+        - frontnet
+    ports:
+        - 80:80
+        - 443:443
+    dns:
+        - 8.8.8.8
+        - 9.9.9.9
+    restart: always
+    volumes:
+        - type: bind
+          source: /home/ubuntu/etc-letsencrypt
+          target: /etc/letsencrypt
+        - type: bind
+          source: /home/ubuntu/webroots
+          target: /webroots
+        - type: bind
+          source: /home/ubuntu/nginx-conf-d
+          target: /etc/nginx/conf.d
 
 networks:
   frontnet:
