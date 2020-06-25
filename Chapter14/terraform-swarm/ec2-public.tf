@@ -40,7 +40,11 @@ resource "aws_instance" "public" {
                     name = "${var.project_name}-private-svc1" 
                 }
             ]
-        })
+        }),
+        // Make directories required for cronginx container
+        "mkdir /home/ubuntu/etc-letsencrypt",
+        "mkdir /home/ubuntu/webroots",
+        "mkdir /home/ubuntu/nginx-conf-d"
     ]) 
 }
 
