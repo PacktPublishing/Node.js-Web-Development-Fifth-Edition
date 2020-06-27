@@ -26,7 +26,7 @@ WORKDIR /scripts
 # This installs a Crontab entry which 
 # runs "certbot renew" on several days a week at 03:22 AM
 
-RUN echo "22 03 * * 2,7 root /usr/bin/certbot renew" >/etc/cron.d/certbot-renew
+RUN echo "22 03 * * 2,7 root /scripts/renew.sh" >/etc/cron.d/certbot-renew
 
 # Run both nginx and cron together
 CMD [ "sh", "-c", "cron && nginx -g 'daemon off;'" ]

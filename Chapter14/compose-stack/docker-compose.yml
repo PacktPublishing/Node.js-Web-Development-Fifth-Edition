@@ -153,9 +153,10 @@ services:
     environment:
         DEBUG: notes:*,express:*
         REDIS_ENDPOINT: "redis"
-        TWITTER_CALLBACK_HOST: "http://notes.geekwisdom.net"
+        TWITTER_CALLBACK_HOST: "https://notes.geekwisdom.net"
         TWITTER_CONSUMER_KEY_FILE: /var/run/secrets/TWITTER_CONSUMER_KEY
         TWITTER_CONSUMER_SECRET_FILE: /var/run/secrets/TWITTER_CONSUMER_SECRET
+        CSP_CONNECT_SRC_HOST: "wss://notes.geekwisdom.net"
         SEQUELIZE_CONNECT: models/sequelize-docker-mysql.yaml
         SEQUELIZE_DBHOST: db-notes
         NOTES_MODEL: sequelize
