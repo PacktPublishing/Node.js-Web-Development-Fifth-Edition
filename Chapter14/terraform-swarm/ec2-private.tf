@@ -68,17 +68,76 @@ resource "aws_security_group" "ec2-private-sg" {
     description = "allow inbound access to the EC2 instance"
     vpc_id      = aws_vpc.notes.id
 
+
     ingress {
-        protocol    = "-1"
-        from_port   = 0
-        to_port     = 0
+        description = "SSH"
+        protocol    = "TCP"
+        from_port   = 22
+        to_port     = 22
         cidr_blocks = [ aws_vpc.notes.cidr_block ]
     }
 
     ingress {
-        protocol = "UDP"
+        description = "HTTP"
+        protocol    = "TCP"
+        from_port   = 80
+        to_port     = 80
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    ingress {
+        description = "MySQL"
+        protocol    = "TCP"
+        from_port   = 3306
+        to_port     = 3306
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    ingress {
+        description = "Redis"
+        protocol    = "TCP"
+        from_port   = 6379
+        to_port     = 6379
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    ingress {
+        description = "Docker swarm management"
+        from_port   = 2377
+        to_port     = 2377
+        protocol    = "tcp"
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    ingress {
+        description = "Docker container network discovery"
+        from_port   = 7946
+        to_port     = 7946
+        protocol    = "tcp"
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    ingress {
+        description = "Docker container network discovery"
+        from_port   = 7946
+        to_port     = 7946
+        protocol    = "udp"
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    ingress {
+        description = "Docker overlay network"
+        from_port   = 4789
+        to_port     = 4789
+        protocol    = "udp"
+        cidr_blocks = [ aws_vpc.notes.cidr_block ]
+    }
+
+    egress {
+        description = "Docker swarm (udp)"
         from_port   = 0
         to_port     = 0
+        protocol    = "udp"
         cidr_blocks = [ aws_vpc.notes.cidr_block ]
     }
 
