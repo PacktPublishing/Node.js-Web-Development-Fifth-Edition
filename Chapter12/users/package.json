@@ -20,7 +20,7 @@
     "mysql2": "^2.1.0",
     "restify": "^8.5.1",
     "restify-clients": "^2.6.8",
-    "sequelize": "^5.21.3",
+    "sequelize": "^6.2.0",
     "sqlite3": "^4.1.1"
   }
 }
