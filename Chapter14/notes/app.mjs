@@ -107,13 +107,18 @@ app.use(logger(process.env.REQUEST_LOG_FORMAT || 'dev', {
         })
         : process.stdout
 }));
+const csp_connect_src = [ "'self'" ];
+if (typeof process.env.CSP_CONNECT_SRC_URL === 'string'
+  && process.env.CSP_CONNECT_SRC_URL !== '') {
+    csp_connect_src.push(process.env.CSP_CONNECT_SRC_URL);
+}
 app.use(helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", "'unsafe-inline'" ],
       styleSrc: ["'self'", 'fonts.googleapis.com' ],
       fontSrc: ["'self'", 'fonts.gstatic.com' ],
-      connectSrc: [ "'self'", 'wss://wwwatts.net' ]
+      connectSrc: csp_connect_src
     }
 }));
 app.use(helmet.dnsPrefetchControl({ allow: false }));
