@@ -1,5 +1,6 @@
 import path from 'path';
 import util from 'util';
+import fs from 'fs-extra';
 import { default as express } from 'express';
 import { default as passport } from 'passport'; 
 import { default as passportLocal } from 'passport-local';
@@ -84,31 +85,51 @@ passport.deserializeUser(async (username, done) => {
 const twittercallback = process.env.TWITTER_CALLBACK_HOST
     ? process.env.TWITTER_CALLBACK_HOST
     : "http://localhost:3000";
-export var twitterLogin;
+export var twitterLogin = false;
+let consumer_key;
+let consumer_secret;
 
 if (typeof process.env.TWITTER_CONSUMER_KEY !== 'undefined'
-  && process.env.TWITTER_CONSUMER_KEY !== ''
-  && typeof process.env.TWITTER_CONSUMER_SECRET !== 'undefined'
-  && process.env.TWITTER_CONSUMER_SECRET !== '') {
-    passport.use(new TwitterStrategy({
-      consumerKey: process.env.TWITTER_CONSUMER_KEY,
-      consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-      callbackURL: `${twittercallback}/users/auth/twitter/callback`
-    },
-    async function(token, tokenSecret, profile, done) {
-      try {
-        done(null, await usersModel.findOrCreate({
-          id: profile.username, username: profile.username, password: "",
-          provider: profile.provider, familyName: profile.displayName,
-          givenName: "", middleName: "",
-          photos: profile.photos, emails: profile.emails
-        }));
-      } catch(err) { done(err); }
-    }));
+ && process.env.TWITTER_CONSUMER_KEY !== ''
+ && typeof process.env.TWITTER_CONSUMER_SECRET !== 'undefined'
+ && process.env.TWITTER_CONSUMER_SECRET !== '') {
 
+    consumer_key = process.env.TWITTER_CONSUMER_KEY;
+    consumer_secret = process.env.TWITTER_CONSUMER_SECRET;
     twitterLogin = true;
-} else {
-    twitterLogin = false;
+
+} else if (typeof process.env.TWITTER_CONSUMER_KEY_FILE !== 'undefined'
+ && process.env.TWITTER_CONSUMER_KEY_FILE !== ''
+ && typeof process.env.TWITTER_CONSUMER_SECRET_FILE !== 'undefined'
+ && process.env.TWITTER_CONSUMER_SECRET_FILE !== '') {
+    
+    consumer_key =
+        fs.readFileSync(process.env.TWITTER_CONSUMER_KEY_FILE, 'utf8');
+    consumer_secret =
+        fs.readFileSync(process.env.TWITTER_CONSUMER_SECRET_FILE, 'utf8');
+    twitterLogin = true;
+}
+
+if (twitterLogin) {
+
+    console.log(`enable_twitter consumer_key ${consumer_key} consumer_secret ${consumer_secret} ${twittercallback}/users/auth/twitter/callback`);
+    passport.use(new TwitterStrategy({
+        consumerKey: consumer_key,
+        consumerSecret: consumer_secret,
+        callbackURL: `${twittercallback}/users/auth/twitter/callback`
+      },
+      async function(token, tokenSecret, profile, done) {
+        try {
+          done(null, await usersModel.findOrCreate({
+            id: profile.username, username: profile.username, password: "",
+            provider: profile.provider, familyName: profile.displayName,
+            givenName: "", middleName: "",
+            photos: profile.photos, emails: profile.emails
+          }));
+        } catch(err) { done(err); }
+      }));
+
+    console.log(`enable_twitter SUCCEED`);
 }
 
 router.get('/auth/twitter', passport.authenticate('twitter')); 
