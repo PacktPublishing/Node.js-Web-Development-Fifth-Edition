@@ -1,11 +1,4 @@
-FROM node:13.13
-# At some time in the future, SQLITE3 will install correctly
-# on Node.js 14.x.  When that happens, we will be able to shift
-# to a later release of this image.  For now we must stick with 
-# Node.js 13.13 because otherwise lots of errors are printed while
-# installing the SQLite3 package
-#
-# FROM node:14
+FROM node:14
 
 RUN apt-get update -y  \
     && apt-get upgrade -y \
