@@ -1,4 +1,7 @@
 import { port } from './app.mjs';
+import { default as DBG } from 'debug';
+const debug = DBG('notes:debug');
+const dbgerror = DBG('notes:error');
 
 /**
  * Normalize a port into a number, string, or false.
