@@ -1,7 +1,4 @@
 import { port } from './app.mjs';
-import { default as DBG } from 'debug';
-const debug = DBG('notes:debug');
-const dbgerror = DBG('notes:error');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -58,7 +55,7 @@ export function onListening() {
     const bind = typeof addr === 'string'
         ? 'pipe ' + addr
         : 'port ' + addr.port;
-    debug(`Listening on ${bind}`);
+    console.log(`Listening on ${bind}`);
 }
 
 
