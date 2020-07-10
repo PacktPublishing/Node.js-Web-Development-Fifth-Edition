@@ -38,7 +38,7 @@ export const sessionCookieName = 'notescookie.sid';
 // });
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';
-useNotesModel(process.env.NOTES_MODEL)
+useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
 .then(store => { debug(`Using NotesStore ${store}`); })
 .catch(error => { onError({ code: 'ENOTESSTORE', error }); });
 

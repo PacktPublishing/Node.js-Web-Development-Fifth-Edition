@@ -38,7 +38,7 @@ const sessionSecret = 'keyboard mouse';
 const sessionStore  = new FileStore({ path: "sessions" }); 
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';
-useNotesModel(process.env.NOTES_MODEL)
+useNotesModel(process.env.NOTES_MODEL ? process.env.NOTES_MODEL : "memory")
 .then(store => {
     debug(`Using NotesStore ${store}`);
     homeInit();
