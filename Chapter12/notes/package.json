@@ -12,7 +12,7 @@
     "docker-build": "docker build -t svc-notes ."
   },
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.x",
     "bootstrap": "^4.5.x",
     "connect-redis": "^4.0.4",
     "cookie-parser": "^1.4.4",

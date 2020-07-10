@@ -11,7 +11,7 @@
     "on-server": "cross-env DEBUG=notes:* SEQUELIZE_CONNECT=models/sequelize-mysql.yaml NOTES_MODEL=sequelize TWITTER_CALLBACK_HOST=http://172.23.89.142:3000 USER_SERVICE_URL=http://172.23.83.119:5858 PORT=3000 node ./app.mjs"
   },
   "dependencies": {
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.x",
     "bootstrap": "^4.5.x",
     "cookie-parser": "^1.4.4",
     "cross-env": "^6.0.3",
