@@ -28,14 +28,14 @@ import session from 'express-session';
 // For compatible session store packages, see:
 //      http://expressjs.com/en/resources/middleware/session.html#compatible-session-stores
 // Uncomment this for session-file-store
-// import sessionFileStore from 'session-file-store';
-// const FileStore = sessionFileStore(session);
+import sessionFileStore from 'session-file-store';
+const FileStore = sessionFileStore(session);
 // Uncomment this for connect-loki
 // import sessionLokiStore from 'connect-loki';
 // const LokiStore = sessionLokiStore(session);
 // Uncomment this for memorystore
-import sessionMemoryStore from 'memorystore';
-const MemoryStore = sessionMemoryStore(session);
+// import sessionMemoryStore from 'memorystore';
+// const MemoryStore = sessionMemoryStore(session);
 export const sessionCookieName = 'notescookie.sid';
 
 // capcon.startCapture(process.stdout, function (stdout) {
@@ -76,9 +76,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
     // Use the appropriate session store class
-    store: new MemoryStore({}),
+    // store: new MemoryStore({}),
     // store: new LokiStore({}),
-    // store: new FileStore({ path: "sessions" }),
+    store: new FileStore({ path: "sessions" }),
     secret: 'keyboard mouse',
     resave: true,
     saveUninitialized: true,
