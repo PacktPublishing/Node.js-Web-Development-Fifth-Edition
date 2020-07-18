@@ -7,3 +7,4 @@ data
 node_modules
 sessions
 .env
+session-store.db

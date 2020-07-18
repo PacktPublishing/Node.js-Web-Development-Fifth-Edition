@@ -25,8 +25,15 @@ import { router as notesRouter }  from './routes/notes.mjs';
 import { router as usersRouter, initPassport } from './routes/users.mjs';
 
 import session from 'express-session';
-import sessionFileStore from 'session-file-store';
-const FileStore = sessionFileStore(session); 
+// Uncomment this for session-file-store
+// import sessionFileStore from 'session-file-store';
+// const FileStore = sessionFileStore(session);
+// Uncomment this for connect-loki
+// import sessionLokiStore from 'connect-loki';
+// const LokiStore = sessionLokiStore(session);
+// Uncomment this for memorystore
+import sessionMemoryStore from 'memorystore';
+const MemoryStore = sessionMemoryStore(session);
 export const sessionCookieName = 'notescookie.sid';
 
 // capcon.startCapture(process.stdout, function (stdout) {
@@ -66,7 +73,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-    store: new FileStore({ path: "sessions" }),
+    // Use the appropriate session store class
+    store: new MemoryStore({}),
+    // store: new LokiStore({}),
+    // store: new FileStore({ path: "sessions" }),
     secret: 'keyboard mouse',
     resave: true,
     saveUninitialized: true,

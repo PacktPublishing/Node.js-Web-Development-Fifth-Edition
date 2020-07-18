@@ -14,6 +14,7 @@
   "dependencies": {
     "bcrypt": "^5.x",
     "bootstrap": "^4.5.x",
+    "connect-loki": "^1.1.0",
     "cookie-parser": "^1.4.4",
     "cross-env": "^7.x",
     "debug": "^4.1.1",
@@ -27,6 +28,7 @@
     "jquery": "^3.5.x",
     "js-yaml": "^3.13.1",
     "level": "^6.0.0",
+    "memorystore": "^1.6.2",
     "mongodb": "^3.5.2",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
