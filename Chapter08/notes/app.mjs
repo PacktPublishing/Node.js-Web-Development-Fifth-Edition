@@ -25,6 +25,8 @@ import { router as notesRouter }  from './routes/notes.mjs';
 import { router as usersRouter, initPassport } from './routes/users.mjs';
 
 import session from 'express-session';
+// For compatible session store packages, see:
+//      http://expressjs.com/en/resources/middleware/session.html#compatible-session-stores
 // Uncomment this for session-file-store
 // import sessionFileStore from 'session-file-store';
 // const FileStore = sessionFileStore(session);
