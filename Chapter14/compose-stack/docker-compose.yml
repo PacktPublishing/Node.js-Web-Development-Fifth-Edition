@@ -153,7 +153,7 @@ services:
     environment:
         DEBUG: notes:*,express:*
         REDIS_ENDPOINT: "redis"
-        TWITTER_CALLBACK_HOST: "https://notes.geekwisdom.net"
+        TWITTER_CALLBACK_HOST: "http://notes.geekwisdom.net"
         TWITTER_CONSUMER_KEY_FILE: /var/run/secrets/TWITTER_CONSUMER_KEY
         TWITTER_CONSUMER_SECRET_FILE: /var/run/secrets/TWITTER_CONSUMER_SECRET
         CSP_CONNECT_SRC_HOST: "wss://notes.geekwisdom.net"
@@ -173,8 +173,7 @@ services:
     container_name: redis
 
   cronginx:
-    build: ./cronginx
-    image: 098106984154.dkr.ecr.us-west-2.amazonaws.com/cronginx
+    image: robogeek/cronginx
     container_name: cronginx
     deploy:
         replicas: 1
