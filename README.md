@@ -35,7 +35,7 @@ if (test expression)
 **Following is what you need for this book:**
 If you're looking for an alternative to the ‘P’ languages (Perl, PHP, and Python), or if you want to get started with server-side web development with JavaScript programming, or if you want a deep dive into deploying services to cloud hosting, this Node.js book is for you. A rudimentary understanding of JavaScript and web application development is a must before you get started with this book.
 
-With the following software and hardware list you can run all code files present in the book (Chapter 1-15).
+With the following software and hardware list you can run all code files present in the book (Chapter 1-14).
 
 ### Software and Hardware List
 
@@ -61,7 +61,7 @@ With the following software and hardware list you can run all code files present
 ### Related products <Other books you may enjoy>
 * Full-Stack React Projects - Second Edition [[Packt]](https://www.packtpub.com/web-development/full-stack-react-projects-second-edition?utm_source=github&utm_medium=repository&utm_campaign=9781839215414) [[Amazon]](https://www.amazon.com/dp/1839215410)
 
-* Linux Device Drivers Development [[Packt]](https://www.packtpub.com/web-development/learn-webpack?utm_source=github&utm_medium=repository&utm_campaign=9781789954401) [[Amazon]](https://www.amazon.com/dp/1789954401)
+* Webpack 5 Up and Running [[Packt]](https://www.packtpub.com/web-development/learn-webpack?utm_source=github&utm_medium=repository&utm_campaign=9781789954401) [[Amazon]](https://www.amazon.com/dp/1789954401)
 
 ## Get to Know the Author
 **David Herron**
