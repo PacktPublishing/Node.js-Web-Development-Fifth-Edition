@@ -32,9 +32,14 @@ import passportSocketIo from 'passport.socketio';
 
 import session from 'express-session';
 import sessionFileStore from 'session-file-store';
-const FileStore = sessionFileStore(session); 
+const FileStore = sessionFileStore(session);
+
+// import sessionMemoryStore from 'memorystore';
+// const MemoryStore = sessionMemoryStore(session);
+
 export const sessionCookieName = 'notescookie.sid';
-const sessionSecret = 'keyboard mouse'; 
+const sessionSecret = 'keyboard mouse';
+// const sessionStore  = new MemoryStore({});
 const sessionStore  = new FileStore({ path: "sessions" }); 
 
 import { useModel as useNotesModel } from './models/notes-store.mjs';

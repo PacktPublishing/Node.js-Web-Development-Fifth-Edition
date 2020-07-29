@@ -1,9 +1,10 @@
 ### Set up Node.js from Nodesource
 ### Install Node.js, MySQL, and related tools
 
-# Use 13.x because SQLite3 does not support 14.x
-# curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
-# Switch to this when SQLite3 supports Node.js 14.x - supposed to be v5.0.0
+# May need to install Curl
+# sudo apt-get update
+# sudo apt-get install curl -y
+
 curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 sudo apt-get update
 sudo apt-get upgrade -y
