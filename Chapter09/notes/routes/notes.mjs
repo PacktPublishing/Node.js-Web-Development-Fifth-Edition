@@ -45,8 +45,8 @@ router.post('/save', ensureAuthenticated, async (req, res, next) => {
 // Read Note (read)
 router.get('/view', async (req, res, next) => {
     try {
-        var note = await notes.read(req.query.key);
-        let messages = await recentMessages('/notes', req.query.key);
+        const note = await notes.read(req.query.key);
+        const messages = await recentMessages('/notes', req.query.key);
         res.render('noteview', {
             title: note ? note.title : "",
             notekey: req.query.key,

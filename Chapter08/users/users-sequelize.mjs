@@ -44,7 +44,8 @@ export async function connectDB() {
 
     log('Sequelize params '+ util.inspect(params));
     
-    sequlz = new Sequelize(params.dbname, params.username, params.password, params.params);
+    sequlz = new Sequelize(params.dbname, params.username,
+                           params.password, params.params);
     
     // These fields largely come from the Passport / Portable Contacts schema.
     // See http://www.passportjs.org/docs/profile

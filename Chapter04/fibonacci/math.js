@@ -1,10 +1,10 @@
-exports.fibonacci = function(n) {
+module.exports.fibonacci = function(n) {
     if (n === 0) return 0;
     else if (n === 1 || n === 2) return 1;
     else return exports.fibonacci(n-1) + exports.fibonacci(n-2);
 };
 
-exports.fibonacciLoop = function(n) {
+module.exports.fibonacciLoop = function(n) {
     var fibos = [];
     fibos[0] = 0;
     fibos[1] = 1;
@@ -15,7 +15,7 @@ exports.fibonacciLoop = function(n) {
     return fibos[n];
 };
 
-exports.fibonacciAsync = function(n, done) {
+module.exports.fibonacciAsync = function(n, done) {
     if (n === 0)
         done(undefined, 0);
     else if (n === 1 || n === 2)
@@ -35,7 +35,7 @@ exports.fibonacciAsync = function(n, done) {
     }
 };
 
-exports.fibonacciPromise = function(n) {
+module.exports.fibonacciPromise = function(n) {
     return new Promise((resolve, reject) => {
         exports.fibonacciAsync(n, (err, val) => {
             if (err) reject(err);
@@ -44,7 +44,7 @@ exports.fibonacciPromise = function(n) {
     });
 };
 
-const fibonacciAwait = exports.fibonacciAwait = async function(n) {
+const fibonacciAwait = module.exports.fibonacciAwait = async function(n) {
     if (n === 0) return 0;
     if (n === 1 || n === 2) return 1;
     if (n === 3) return 2;

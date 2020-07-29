@@ -2,7 +2,6 @@
   "name": "userauth-test",
   "version": "1.0.0",
   "description": "Test suite for user authentication server",
-  "main": "test.mjs",
   "scripts": {
     "test": "cross-env URL_USERS_TEST=http://localhost:5858 mocha test.mjs"
   },

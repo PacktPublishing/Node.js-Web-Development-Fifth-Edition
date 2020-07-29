@@ -1,5 +1,5 @@
 
-var count = 0;
+let count = 0;
 export function next() { return ++count; }
 function squared() { return Math.pow(count, 2); }
 export function hello() {

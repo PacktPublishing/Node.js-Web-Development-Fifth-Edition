@@ -13,7 +13,7 @@ import DBG from 'debug';
 const debug = DBG('notes:model-messages');
 const error = DBG('notes:error-messages');
  
-var sequelize;
+let sequelize;
 export class SQMessage extends Sequelize.Model {}
 
 async function connectDB() {

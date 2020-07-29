@@ -1,7 +1,7 @@
 var http = require('http');
 var url  = require('url');
 
-var fibonacci = function(n) {
+const fibonacci = exports.fibonacci = function(n) {
     if (n === 1 || n === 2)
         return 1;
     else
