@@ -99,9 +99,9 @@ services:
       - 8.8.8.8
       - 9.9.9.9
     restart: always
-    secrets:
-        - TWITTER_CONSUMER_KEY
-        - TWITTER_CONSUMER_SECRET
+    # secrets:
+    #    - TWITTER_CONSUMER_KEY
+    #    - TWITTER_CONSUMER_SECRET
     environment:
         # DEBUG: notes:*,express:*
         REDIS_ENDPOINT: "redis"
@@ -137,8 +137,8 @@ networks:
   svcnet:
     driver: overlay
 
-secrets:
-    TWITTER_CONSUMER_KEY:
-        external: true
-    TWITTER_CONSUMER_SECRET:
-        external: true
+# secrets:
+#    TWITTER_CONSUMER_KEY:
+#        external: true
+#    TWITTER_CONSUMER_SECRET:
+#        external: true
