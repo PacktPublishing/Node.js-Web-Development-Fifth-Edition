@@ -9,7 +9,7 @@
   "author": "David Herron <david@davidherron.com>",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "chai": "^4.2.0",
     "cross-env": "^7.0.2",
     "mocha": "^7.2.0",
