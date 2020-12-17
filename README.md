@@ -68,6 +68,10 @@ With the following software and hardware list you can run all code files present
 
 * Webpack 5 Up and Running [[Packt]](https://www.packtpub.com/web-development/learn-webpack?utm_source=github&utm_medium=repository&utm_campaign=9781789954401) [[Amazon]](https://www.amazon.com/dp/1789954401)
 
+### Errata
+* Page 28: **return 2** _should be replaced as_ **done(2)**
+
+
 ## Get to Know the Author
 **David Herron**
 is a software engineer living in Silicon Valley who has worked on projects ranging from an X.400 email server to being part of the team that launched the OpenJDK project, to Yahoo's Node.js application-hosting platform, and a solar array performance monitoring service. That took David through several companies until he grew tired of communicating primarily with machines, and developed a longing for human communication. Today, David is an independent writer of books and blog posts covering topics related to technology, programming, electric vehicles, and clean energy technologies.
